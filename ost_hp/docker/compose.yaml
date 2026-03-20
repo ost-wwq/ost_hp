@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  ost-hp:
+    container_name: ost-hp
+    image: webdevops/php-nginx:8.4-alpine
+    volumes:
+      - ../:/app  # webdevopsイメージのデフォルトrootは /app です
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf # Nginx設定をマウント
+    ports:
+      - '8013:80'
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/public # 公開ディレクトリを /public にする場合
+      - TZ=Asia/Tokyo
+    networks:
+      - project-network
+
+networks:
+  project-network:
+    driver: bridge
