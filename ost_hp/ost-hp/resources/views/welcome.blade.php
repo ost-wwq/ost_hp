@@ -476,6 +476,23 @@
                         <li><a href="#services">専門家アドバイス</a></li>
                     </ul>
                 </div>
+                <div class="footer__links-group">
+                    <h4>フロー</h4>
+                    <ul>
+                        <li><a href="{{ url('/flow') }}">購入フロー</a></li>
+                        <li><a href="{{ url('/selling-flow') }}">売却フロー</a></li>
+                        <li><a href="{{ url('/rental-flow') }}">貸出フロー</a></li>
+                        <li><a href="{{ url('/renting-flow') }}">賃借フロー</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links-group">
+                    <h4>その他</h4>
+                    <ul>
+                        <li><a href="{{ url('/company') }}">会社情報</a></li>
+                        <li><a href="{{ url('/commission') }}">報酬額</a></li>
+                        <li><a href="#faq">よくある質問</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="footer__bottom">
