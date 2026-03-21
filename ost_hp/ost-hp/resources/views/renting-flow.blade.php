@@ -8,7 +8,7 @@
 <nav id="navbar" class="navbar navbar--dark">
     <div class="container navbar__inner">
         <a href="{{ url('/') }}" class="navbar__logo">
-            <span class="navbar__logo-icon">🏠</span>
+            <img src="{{ asset('ost_icon_20260321.jpg') }}" alt="ロゴ" class="navbar__logo-icon">
             <span class="navbar__logo-text">ワンステップテックス不動産</span>
         </a>
         <button class="navbar__toggle" id="navToggle" aria-label="メニュー">
@@ -580,7 +580,7 @@
 <footer class="footer">
     <div class="container footer__inner">
         <div class="footer__brand">
-            <span class="footer__logo-icon">🏠</span>
+            <img src="{{ asset('ost_icon_20260321.jpg') }}" alt="ロゴ" class="footer__logo-icon">
             <span class="footer__logo-text">ワンステップテックス不動産</span>
         </div>
         <div class="footer__links">
@@ -867,7 +867,7 @@
 .footer { background: var(--dark); padding: 40px 0; }
 .footer__inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .footer__brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 700; }
-.footer__logo-icon { font-size: 1.4rem; }
+.footer__logo-icon { width: 32px; height: 32px; object-fit: contain; border-radius: 5px; display: block; }
 .footer__links { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
 .footer__link { font-size: .85rem; color: rgba(255,255,255,.6); transition: color var(--transition); }
 .footer__link:hover { color: var(--white); }

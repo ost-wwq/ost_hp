@@ -8,7 +8,7 @@
 <nav id="navbar" class="navbar">
     <div class="container navbar__inner">
         <a href="#" class="navbar__logo">
-            <span class="navbar__logo-icon">🏠</span>
+            <img src="{{ asset('ost_icon_20260321.jpg') }}" alt="ロゴ" class="navbar__logo-icon">
             <span class="navbar__logo-text">ワンステップテックス不動産</span>
         </a>
         <button class="navbar__toggle" id="navToggle" aria-label="メニュー">

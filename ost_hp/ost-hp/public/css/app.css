@@ -147,7 +147,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     transition: color var(--transition);
 }
 .navbar.scrolled .navbar__logo { color: var(--dark); }
-.navbar__logo-icon { font-size: 1.4rem; line-height: 1; }
+.navbar__logo-icon { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; display: block; }
 .navbar__menu {
     display: flex;
     align-items: center;
