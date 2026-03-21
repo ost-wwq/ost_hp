@@ -370,7 +370,7 @@
                     </div>
                     <div>
                         <div class="contact__info-label">電話番号</div>
-                        <div class="contact__info-value">03-XXXX-XXXX</div>
+                        <div class="contact__info-value"><a href="tel:09085060043" style="color:inherit;text-decoration:none;">090-8506-0043</a></div>
                     </div>
                 </div>
                 <div class="contact__info-item">
@@ -382,7 +382,7 @@
                     </div>
                     <div>
                         <div class="contact__info-label">メールアドレス</div>
-                        <div class="contact__info-value">info@onesteptechs.com</div>
+                        <div class="contact__info-value"><a href="mailto:bunsyuu.gi@gmail.com" style="color:inherit;text-decoration:none;">bunsyuu.gi@gmail.com</a></div>
                     </div>
                 </div>
                 <div class="contact__info-item">
@@ -393,8 +393,31 @@
                         </svg>
                     </div>
                     <div>
+                        <div class="contact__info-label">住所</div>
+                        <div class="contact__info-value">埼玉県川口市芝２ー１２ー６</div>
+                    </div>
+                </div>
+                <div class="contact__info-item">
+                    <div class="contact__info-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 2v4M16 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
                         <div class="contact__info-label">営業時間</div>
-                        <div class="contact__info-value">平日 9:00 〜 18:00</div>
+                        <div class="contact__info-value">10:00 〜 19:00（不定休）</div>
+                    </div>
+                </div>
+                <div class="contact__info-item">
+                    <div class="contact__info-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="contact__info-label">宅建業免許</div>
+                        <div class="contact__info-value">埼玉知事(1)第25759号</div>
                     </div>
                 </div>
             </div>
@@ -430,7 +453,7 @@
         <div class="footer__inner">
             <div class="footer__brand">
                 <a href="#" class="footer__logo">
-                    <span>🏠</span>
+                    <img src="{{ asset('ost_icon_20260321.jpg') }}" alt="ロゴ" style="width:32px;height:32px;object-fit:contain;border-radius:5px;display:block;">
                     <span>ワンステップテックス不動産</span>
                 </a>
                 <p class="footer__tagline">お客様一人ひとりに最適なご提案</p>
