@@ -101,16 +101,6 @@
                             <td>048-458-0527</td>
                         </tr>
                         <tr>
-                            <th>担当</th>
-                            <td>魏（ぎ）</td>
-                        </tr>
-                        <tr>
-                            <th>担当直通</th>
-                            <td>
-                                <a href="tel:08030920043" class="company-link">080-3092-0043</a>
-                            </td>
-                        </tr>
-                        <tr>
                             <th>E-mail</th>
                             <td>
                                 <a href="mailto:bunsyuu.gi@gmail.com" class="company-link">bunsyuu.gi@gmail.com</a>
@@ -118,7 +108,7 @@
                         </tr>
                         <tr>
                             <th>営業時間</th>
-                            <td>9:00 〜 18:00（年中無休）</td>
+                            <td>10:00 〜 19:00（不定休）</td>
                         </tr>
                     </tbody>
                 </table>
@@ -130,7 +120,6 @@
                         <div class="contact-card__body">
                             <div class="contact-card__label">お電話でのお問い合わせ</div>
                             <div class="contact-card__value">090-8506-0043</div>
-                            <div class="contact-card__sub">担当直通：080-3092-0043</div>
                         </div>
                     </a>
                     <a href="mailto:bunsyuu.gi@gmail.com" class="contact-card contact-card--mail">
@@ -174,7 +163,7 @@
                         <span class="access-item__icon">🚃</span>
                         <div>
                             <div class="access-item__label">最寄り駅</div>
-                            <div class="access-item__val">JR武蔵野線「東川口駅」・京浜東北線「川口駅」</div>
+                            <div class="access-item__val">JR京浜東北線「蕨駅」徒歩10分</div>
                         </div>
                     </div>
                     <div class="access-item">
