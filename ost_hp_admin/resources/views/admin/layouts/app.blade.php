@@ -318,6 +318,13 @@
                 @endif
             </a>
         </div>
+        <div class="sidebar__nav-item">
+            <a href="{{ route('admin.news.index') }}"
+               class="{{ request()->routeIs('admin.news.*') ? 'active' : '' }}">
+                <span>📰</span>
+                <span>お知らせ</span>
+            </a>
+        </div>
         <div class="sidebar__nav-label">サイト</div>
         <div class="sidebar__nav-item">
             <a href="{{ env('PUBLIC_SITE_URL', 'http://localhost:8013') }}" target="_blank">

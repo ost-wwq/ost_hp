@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Middleware\AdminAuth;
@@ -29,6 +30,15 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::put('properties/{property}',         [PropertyController::class, 'update'])->name('properties.update');
         Route::delete('properties/{property}',      [PropertyController::class, 'destroy'])->name('properties.destroy');
         Route::patch('properties/{property}/toggle-publish', [PropertyController::class, 'togglePublish'])->name('properties.toggle-publish');
+
+        // お知らせ管理
+        Route::get('news',               [NewsController::class, 'index'])->name('news.index');
+        Route::get('news/create',        [NewsController::class, 'create'])->name('news.create');
+        Route::post('news',              [NewsController::class, 'store'])->name('news.store');
+        Route::get('news/{news}',        [NewsController::class, 'show'])->name('news.show');
+        Route::get('news/{news}/edit',   [NewsController::class, 'edit'])->name('news.edit');
+        Route::put('news/{news}',        [NewsController::class, 'update'])->name('news.update');
+        Route::delete('news/{news}',     [NewsController::class, 'destroy'])->name('news.destroy');
 
         // 設定
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
