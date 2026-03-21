@@ -1,7 +1,56 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\InboundMailController;
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\BrokerController;
+use App\Models\Property;
 
+// ホームページ
 Route::get('/', function () {
-    return view('welcome');
+    $featuredProperties = Property::published()
+        ->where('status', 'available')
+        ->latest()
+        ->limit(6)
+        ->get();
+    return view('welcome', compact('featuredProperties'));
+});
+
+// 会社情報・アクセス
+Route::get('/company', fn() => view('company'))->name('company');
+
+// 不動産購入フロー
+Route::get('/flow', fn() => view('flow'))->name('flow');
+
+// 不動産売却フロー
+Route::get('/selling-flow', fn() => view('selling-flow'))->name('selling-flow');
+
+// 不動産貸出フロー
+Route::get('/rental-flow', fn() => view('rental-flow'))->name('rental-flow');
+
+// 不動産賃借フロー
+Route::get('/renting-flow', fn() => view('renting-flow'))->name('renting-flow');
+
+// 報酬額
+Route::get('/commission', fn() => view('commission'))->name('commission');
+
+// 物件一覧・詳細（公開）
+Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
+Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
+
+// お問い合わせフォーム送信
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
+// 返信メール受信 Webhook（SendGrid / Mailgun など）
+Route::post('/webhook/inbound-mail', [InboundMailController::class, 'handle'])
+    ->name('webhook.inbound-mail')
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+// 業者向け確認ページ
+Route::prefix('broker')->name('broker.')->group(function () {
+    Route::get('/', [BrokerController::class, 'showPin'])->name('pin');
+    Route::post('/', [BrokerController::class, 'verifyPin'])->name('verify');
+    Route::get('/properties', [BrokerController::class, 'properties'])->name('properties');
+    Route::post('/logout', [BrokerController::class, 'logout'])->name('logout');
 });

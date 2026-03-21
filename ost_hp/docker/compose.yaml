@@ -9,7 +9,7 @@ services:
     ports:
       - '8013:80'
     environment:
-      - WEB_DOCUMENT_ROOT=/app/public # 公開ディレクトリを /public にする場合
+      - WEB_DOCUMENT_ROOT=/app/ost-hp/public # 公開ディレクトリを /public にする場合
       - TZ=Asia/Tokyo
     networks:
       - project-network

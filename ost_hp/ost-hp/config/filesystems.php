@@ -47,6 +47,14 @@ return [
             'report' => false,
         ],
 
+        // 画像アップロード先 (public/uploads/)
+        'public_uploads' => [
+            'driver'     => 'local',
+            'root'       => public_path('uploads'),
+            'url'        => rtrim(env('APP_URL', 'http://localhost'), '/') . '/uploads',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
