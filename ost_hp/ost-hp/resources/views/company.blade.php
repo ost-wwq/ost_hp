@@ -103,7 +103,7 @@
                         <tr>
                             <th>E-mail</th>
                             <td>
-                                <a href="mailto:bunsyuu.gi@gmail.com" class="company-link">bunsyuu.gi@gmail.com</a>
+                                <a href="mailto:info@house.onesteptechs.com" class="company-link">info@house.onesteptechs.com</a>
                             </td>
                         </tr>
                         <tr>
@@ -122,11 +122,11 @@
                             <div class="contact-card__value">090-8506-0043</div>
                         </div>
                     </a>
-                    <a href="mailto:bunsyuu.gi@gmail.com" class="contact-card contact-card--mail">
+                    <a href="mailto:info@house.onesteptechs.com" class="contact-card contact-card--mail">
                         <div class="contact-card__icon">✉️</div>
                         <div class="contact-card__body">
                             <div class="contact-card__label">メールでのお問い合わせ</div>
-                            <div class="contact-card__value">bunsyuu.gi@gmail.com</div>
+                            <div class="contact-card__value">info@house.onesteptechs.com</div>
                             <div class="contact-card__sub">24時間受付・随時対応</div>
                         </div>
                     </a>

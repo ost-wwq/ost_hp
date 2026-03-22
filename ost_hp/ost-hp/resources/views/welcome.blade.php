@@ -382,7 +382,7 @@
                     </div>
                     <div>
                         <div class="contact__info-label">メールアドレス</div>
-                        <div class="contact__info-value"><a href="mailto:bunsyuu.gi@gmail.com" style="color:inherit;text-decoration:none;">bunsyuu.gi@gmail.com</a></div>
+                        <div class="contact__info-value"><a href="mailto:info@house.onesteptechs.com" style="color:inherit;text-decoration:none;">info@house.onesteptechs.com</a></div>
                     </div>
                 </div>
                 <div class="contact__info-item">

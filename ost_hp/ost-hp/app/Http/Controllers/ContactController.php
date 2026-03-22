@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
+use App\Mail\ContactAutoReplyMail;
 use App\Models\Contact;
 
 class ContactController extends Controller
@@ -21,8 +22,11 @@ class ContactController extends Controller
         // DBに保存
         Contact::create($validated);
 
-        // メール送信
+        // 管理者への通知メール
         Mail::to(config('mail.contact_to'))->send(new ContactMail($validated));
+
+        // ユーザーへの自動返信メール
+        Mail::to($validated['email'])->send(new ContactAutoReplyMail($validated));
 
         return response()->json(['status' => 'ok']);
     }
