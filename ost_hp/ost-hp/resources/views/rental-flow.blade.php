@@ -78,21 +78,48 @@
 
         <div class="flow-timeline flow-timeline--rental">
             @php
+$icons = [
+  'chat'      => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" /></svg>',
+  'search'    => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>',
+  'edit'      => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>',
+  'bank'      => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" /></svg>',
+  'clipboard' => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" /></svg>',
+  'check'     => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>',
+  'money'     => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" /></svg>',
+  'home'      => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>',
+  'document'  => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>',
+  'announce'  => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 1 8.835-2.535m0 0A23.74 23.74 0 0 1 18.795 3c.38 0 .75.02 1.118.06A2.67 2.67 0 0 1 22.5 5.673v8.154c0 1.335-.955 2.51-2.28 2.637a23.676 23.676 0 0 1-1.22.06m0-13.5a23.74 23.74 0 0 0-3.454-.22c-.38 0-.75.02-1.118.06" /></svg>',
+  'handshake' => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>',
+  'build'     => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" /></svg>',
+  'key'       => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 0 1 21.75 8.25Z" /></svg>',
+  'shield'    => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>',
+  'bulb'      => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" /></svg>',
+  'warn'      => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>',
+  'pin'       => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>',
+  'celebrate' => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>',
+  'building'  => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>',
+  'fire'      => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" /></svg>',
+  'chart'     => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>',
+  'tools'     => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" /></svg>',
+  'house'     => '<svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" /></svg>',
+];
+@endphp
+            @php
             $steps = [
-                ['num'=>'01','icon'=>'💬','label'=>'ご相談・賃料査定','color'=>'rental-a','duration'=>'随時'],
-                ['num'=>'02','icon'=>'📃','label'=>'管理委託契約の締結','color'=>'rental-a','duration'=>'1〜3日'],
-                ['num'=>'03','icon'=>'📣','label'=>'入居者募集活動','color'=>'rental-b','duration'=>'1〜3ヶ月'],
-                ['num'=>'04','icon'=>'📝','label'=>'入居申込・審査','color'=>'rental-b','duration'=>'3〜7日'],
-                ['num'=>'05','icon'=>'📋','label'=>'重要事項説明・賃貸借契約','color'=>'rental-b','duration'=>'1日'],
-                ['num'=>'06','icon'=>'🔑','label'=>'鍵の引渡し・入居開始','color'=>'rental-c','duration'=>'当日'],
-                ['num'=>'07','icon'=>'🛡','label'=>'入居中の管理サポート','color'=>'rental-c','duration'=>'継続'],
+                ['num'=>'01','icon'=>'chat','label'=>'ご相談・賃料査定','color'=>'rental-a','duration'=>'随時'],
+                ['num'=>'02','icon'=>'document','label'=>'管理委託契約の締結','color'=>'rental-a','duration'=>'1〜3日'],
+                ['num'=>'03','icon'=>'announce','label'=>'入居者募集活動','color'=>'rental-b','duration'=>'1〜3ヶ月'],
+                ['num'=>'04','icon'=>'edit','label'=>'入居申込・審査','color'=>'rental-b','duration'=>'3〜7日'],
+                ['num'=>'05','icon'=>'clipboard','label'=>'重要事項説明・賃貸借契約','color'=>'rental-b','duration'=>'1日'],
+                ['num'=>'06','icon'=>'key','label'=>'鍵の引渡し・入居開始','color'=>'rental-c','duration'=>'当日'],
+                ['num'=>'07','icon'=>'shield','label'=>'入居中の管理サポート','color'=>'rental-c','duration'=>'継続'],
             ];
             @endphp
 
             @foreach($steps as $i => $s)
             <div class="flow-timeline__item reveal">
                 <div class="flow-timeline__dot flow-timeline__dot--{{ $s['color'] }}">
-                    <span>{{ $s['icon'] }}</span>
+                    {!! $icons[$s['icon']] !!}
                 </div>
                 <div class="flow-timeline__content">
                     <span class="flow-timeline__num">STEP {{ $s['num'] }}</span>
@@ -113,7 +140,7 @@
         <div class="step-card reveal" id="step01">
             <div class="step-card__header step-card__header--rental-a">
                 <div class="step-card__num">STEP 01</div>
-                <div class="step-card__icon">💬</div>
+                <div class="step-card__icon">{!! $icons['chat'] !!}</div>
                 <h3 class="step-card__title">ご相談・賃料査定</h3>
                 <p class="step-card__subtitle">まずはお気軽にご連絡ください</p>
             </div>
@@ -136,7 +163,7 @@
                     </div>
                     <div class="step-card__side">
                         <div class="step-tip step-tip--rental-a">
-                            <div class="step-tip__icon">💡</div>
+                            <div class="step-tip__icon">{!! $icons['bulb'] !!}</div>
                             <div class="step-tip__title">担当者からのアドバイス</div>
                             <p class="step-tip__text">
                                 周辺の相場賃料を把握することが第一歩です。
@@ -163,7 +190,7 @@
         <div class="step-card reveal" id="step02">
             <div class="step-card__header step-card__header--rental-a">
                 <div class="step-card__num">STEP 02</div>
-                <div class="step-card__icon">📃</div>
+                <div class="step-card__icon">{!! $icons['document'] !!}</div>
                 <h3 class="step-card__title">管理委託契約の締結</h3>
                 <p class="step-card__subtitle">当社との正式な契約を結びます</p>
             </div>
@@ -187,7 +214,7 @@
                     </div>
                     <div class="step-card__side">
                         <div class="step-tip step-tip--rental-a">
-                            <div class="step-tip__icon">📌</div>
+                            <div class="step-tip__icon">{!! $icons['pin'] !!}</div>
                             <div class="step-tip__title">管理手数料の目安</div>
                             <p class="step-tip__text">
                                 一般的に管理手数料は月額賃料の5〜10%程度です。
@@ -214,7 +241,7 @@
         <div class="step-card reveal" id="step03">
             <div class="step-card__header step-card__header--rental-b">
                 <div class="step-card__num">STEP 03</div>
-                <div class="step-card__icon">📣</div>
+                <div class="step-card__icon">{!! $icons['announce'] !!}</div>
                 <h3 class="step-card__title">入居者募集活動</h3>
                 <p class="step-card__subtitle">入居希望者との出会いに向けて動きます</p>
             </div>
@@ -238,7 +265,7 @@
                     </div>
                     <div class="step-card__side">
                         <div class="step-tip step-tip--rental-b">
-                            <div class="step-tip__icon">⚠️</div>
+                            <div class="step-tip__icon">{!! $icons['warn'] !!}</div>
                             <div class="step-tip__title">賃料見直しのタイミング</div>
                             <p class="step-tip__text">
                                 2ヶ月程度募集しても反響が少ない場合は、
@@ -265,7 +292,7 @@
         <div class="step-card reveal" id="step04">
             <div class="step-card__header step-card__header--rental-b">
                 <div class="step-card__num">STEP 04</div>
-                <div class="step-card__icon">📝</div>
+                <div class="step-card__icon">{!! $icons['edit'] !!}</div>
                 <h3 class="step-card__title">入居申込・入居審査</h3>
                 <p class="step-card__subtitle">入居希望者の審査を行います</p>
             </div>
@@ -288,7 +315,7 @@
                     </div>
                     <div class="step-card__side">
                         <div class="step-tip step-tip--rental-b">
-                            <div class="step-tip__icon">💡</div>
+                            <div class="step-tip__icon">{!! $icons['bulb'] !!}</div>
                             <div class="step-tip__title">家賃保証会社について</div>
                             <p class="step-tip__text">
                                 連帯保証人の代わりに家賃保証会社を利用することで、
@@ -315,7 +342,7 @@
         <div class="step-card reveal" id="step05">
             <div class="step-card__header step-card__header--rental-b">
                 <div class="step-card__num">STEP 05</div>
-                <div class="step-card__icon">📋</div>
+                <div class="step-card__icon">{!! $icons['clipboard'] !!}</div>
                 <h3 class="step-card__title">重要事項説明・賃貸借契約の締結</h3>
                 <p class="step-card__subtitle">法律上の重要な手続きです</p>
             </div>
@@ -339,7 +366,7 @@
                     </div>
                     <div class="step-card__side">
                         <div class="step-tip step-tip--rental-b">
-                            <div class="step-tip__icon">📌</div>
+                            <div class="step-tip__icon">{!! $icons['pin'] !!}</div>
                             <div class="step-tip__title">定期借家契約について</div>
                             <p class="step-tip__text">
                                 将来的に自己使用を予定している場合は、
@@ -366,7 +393,7 @@
         <div class="step-card reveal" id="step06">
             <div class="step-card__header step-card__header--rental-c">
                 <div class="step-card__num">STEP 06</div>
-                <div class="step-card__icon">🔑</div>
+                <div class="step-card__icon">{!! $icons['key'] !!}</div>
                 <h3 class="step-card__title">鍵の引渡し・入居開始</h3>
                 <p class="step-card__subtitle">いよいよ入居者が入居します</p>
             </div>
@@ -390,7 +417,7 @@
                     </div>
                     <div class="step-card__side">
                         <div class="step-tip step-tip--rental-c">
-                            <div class="step-tip__icon">💡</div>
+                            <div class="step-tip__icon">{!! $icons['bulb'] !!}</div>
                             <div class="step-tip__title">鍵交換について</div>
                             <p class="step-tip__text">
                                 防犯・安心のため、入居前に鍵の交換をお勧めします。
@@ -417,7 +444,7 @@
         <div class="step-card step-card--final reveal" id="step07">
             <div class="step-card__header step-card__header--rental-c">
                 <div class="step-card__num">STEP 07</div>
-                <div class="step-card__icon">🛡</div>
+                <div class="step-card__icon">{!! $icons['shield'] !!}</div>
                 <h3 class="step-card__title">入居中の管理サポート</h3>
                 <p class="step-card__subtitle">オーナー様の大切な資産をお守りします</p>
             </div>
@@ -440,7 +467,7 @@
                     </div>
                     <div class="step-card__side">
                         <div class="step-tip step-tip--rental-c">
-                            <div class="step-tip__icon">🎉</div>
+                            <div class="step-tip__icon">{!! $icons['celebrate'] !!}</div>
                             <div class="step-tip__title">安定した賃貸経営のために</div>
                             <p class="step-tip__text">
                                 良好な入居者との長期的な賃貸関係を維持することが、
@@ -476,37 +503,37 @@
         </div>
         <div class="cost-grid">
             <div class="cost-card reveal">
-                <div class="cost-card__icon">📄</div>
+                <div class="cost-card__icon">{!! $icons['document'] !!}</div>
                 <h4 class="cost-card__title">仲介手数料</h4>
                 <p class="cost-card__formula rental-formula">月額賃料の0.5〜1ヶ月分＋消費税</p>
                 <p class="cost-card__note">入居者成約時のみ発生（法律上の上限あり）</p>
             </div>
             <div class="cost-card reveal">
-                <div class="cost-card__icon">🛠</div>
+                <div class="cost-card__icon">{!! $icons['tools'] !!}</div>
                 <h4 class="cost-card__title">ハウスクリーニング費用</h4>
                 <p class="cost-card__formula rental-formula">約3〜10万円</p>
                 <p class="cost-card__note">入居前に実施することで入居率アップ</p>
             </div>
             <div class="cost-card reveal">
-                <div class="cost-card__icon">🔧</div>
+                <div class="cost-card__icon">{!! $icons['tools'] !!}</div>
                 <h4 class="cost-card__title">設備修繕費用</h4>
                 <p class="cost-card__formula rental-formula">内容により変動</p>
                 <p class="cost-card__note">エアコン・給湯器など設備の修繕費はオーナー負担が原則</p>
             </div>
             <div class="cost-card reveal">
-                <div class="cost-card__icon">🏛</div>
+                <div class="cost-card__icon">{!! $icons['building'] !!}</div>
                 <h4 class="cost-card__title">管理委託手数料</h4>
                 <p class="cost-card__formula rental-formula">月額賃料の5〜10%</p>
                 <p class="cost-card__note">毎月の家賃収入から差し引き</p>
             </div>
             <div class="cost-card reveal">
-                <div class="cost-card__icon">📊</div>
+                <div class="cost-card__icon">{!! $icons['chart'] !!}</div>
                 <h4 class="cost-card__title">不動産所得税</h4>
                 <p class="cost-card__formula rental-formula">家賃収入に応じて変動</p>
                 <p class="cost-card__note">年間の家賃収入から必要経費を差し引いた額に課税</p>
             </div>
             <div class="cost-card reveal">
-                <div class="cost-card__icon">🏠</div>
+                <div class="cost-card__icon">{!! $icons['home'] !!}</div>
                 <h4 class="cost-card__title">火災保険（オーナー側）</h4>
                 <p class="cost-card__formula rental-formula">年間 約1〜5万円</p>
                 <p class="cost-card__note">建物の火災保険はオーナー負担。継続更新が必要</p>
@@ -690,10 +717,10 @@
 .flow-timeline--rental .flow-timeline__item:nth-child(6)::after { background: #065f46; opacity: .7; }
 
 .flow-timeline__dot {
-    width: 72px; height: 72px;
+    width: 56px; height: 56px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     margin-bottom: 16px;
     border: 4px solid var(--white);
     box-shadow: var(--shadow-md);
@@ -701,6 +728,7 @@
     position: relative;
     z-index: 2;
 }
+.flow-timeline__dot .svg-icon { width: 1.4rem; height: 1.4rem; stroke: #ffffff; }
 .flow-timeline__dot--rental-a { background: #059669; }
 .flow-timeline__dot--rental-b { background: #065f46; }
 .flow-timeline__dot--rental-c { background: #064e3b; }
@@ -731,7 +759,8 @@
 .step-card__header--rental-b { background: linear-gradient(135deg, #064e3b, #065f46); }
 .step-card__header--rental-c { background: linear-gradient(135deg, #022c22, #064e3b); }
 .step-card__num { font-size: .72rem; font-weight: 700; letter-spacing: .12em; opacity: .85; min-width: 60px; }
-.step-card__icon { font-size: 2rem; line-height: 1; }
+.step-card__icon { width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; }
+.step-card__icon .svg-icon { width: 2rem; height: 2rem; stroke: currentColor; }
 .step-card__title { font-size: 1.3rem; font-weight: 700; margin: 0; }
 .step-card__subtitle { font-size: .82rem; opacity: .85; margin: 4px 0 0; margin-left: auto; white-space: nowrap; }
 .step-card__body { padding: 32px; }
@@ -757,7 +786,8 @@
 .step-tip--rental-a { background: #ecfdf5; }
 .step-tip--rental-b { background: #d1fae5; }
 .step-tip--rental-c { background: #ecfdf5; }
-.step-tip__icon { font-size: 1.4rem; margin-bottom: 8px; }
+.step-tip__icon { width: 1.75rem; height: 1.75rem; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; }
+.step-tip__icon .svg-icon { width: 1.4rem; height: 1.4rem; stroke: currentColor; }
 .step-tip__title { font-size: .85rem; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
 .step-tip__text { font-size: .82rem; color: var(--text); line-height: 1.7; }
 
@@ -787,7 +817,8 @@
     transition: transform var(--transition), box-shadow var(--transition);
 }
 .cost-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-.cost-card__icon { font-size: 2rem; margin-bottom: 12px; }
+.cost-card__icon { width: 3rem; height: 3rem; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; background: var(--blue-light); border-radius: 50%; }
+.cost-card__icon .svg-icon { width: 1.6rem; height: 1.6rem; stroke: var(--blue); }
 .cost-card__title { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
 .cost-card__formula { font-size: .9rem; font-weight: 700; margin-bottom: 6px; }
 .rental-formula { color: #059669; }
