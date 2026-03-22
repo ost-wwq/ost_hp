@@ -17,7 +17,7 @@
         <ul class="navbar__menu" id="navMenu">
             <li><a href="{{ url('/') }}" class="navbar__link">ホーム</a></li>
             <li><a href="{{ url('/properties') }}" class="navbar__link">物件一覧</a></li>
-            <li class="navbar__dropdown is-open" id="navDropdownFlow">
+            <li class="navbar__dropdown" id="navDropdownFlow">
                 <a href="#" class="navbar__link navbar__dropdown-toggle navbar__link--active" id="navDropdownFlowToggle">
                     フロー
                     <svg class="navbar__dropdown-arrow" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1011,28 +1011,6 @@ document.querySelectorAll('.faq-item__q').forEach(btn => {
     });
 });
 
-// Mobile navbar
-const navToggle = document.getElementById('navToggle');
-const navMenu = document.getElementById('navMenu');
-if (navToggle) navToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
-
-// Dropdowns (複数対応)
-document.querySelectorAll('.navbar__dropdown').forEach(dd => {
-    const toggle = dd.querySelector('.navbar__dropdown-toggle');
-    if (toggle) {
-        toggle.addEventListener('click', e => {
-            e.preventDefault();
-            const wasOpen = dd.classList.contains('is-open');
-            document.querySelectorAll('.navbar__dropdown').forEach(d => d.classList.remove('is-open'));
-            if (!wasOpen) dd.classList.add('is-open');
-        });
-    }
-});
-document.addEventListener('click', e => {
-    if (!e.target.closest('.navbar__dropdown')) {
-        document.querySelectorAll('.navbar__dropdown').forEach(d => d.classList.remove('is-open'));
-    }
-});
 </script>
 
 @endsection

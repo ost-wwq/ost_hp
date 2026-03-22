@@ -5,16 +5,16 @@
 @section('content')
 
 <!-- ナビゲーション（再利用） -->
-<nav id="navbar" class="navbar scrolled">
+<nav id="navbar" class="navbar navbar--dark">
     <div class="container navbar__inner">
-        <a href="{{ url('/') }}" class="navbar__logo" style="color:var(--dark);">
+        <a href="{{ url('/') }}" class="navbar__logo">
             <span class="navbar__logo-icon">🏠</span>
             <span class="navbar__logo-text">ワンステップテックス不動産</span>
         </a>
-        <ul class="navbar__menu" style="display:flex;">
-            <li><a href="{{ url('/') }}" class="navbar__link" style="color:var(--text);">ホーム</a></li>
-            <li><a href="{{ route('properties.index') }}" class="navbar__link" style="color:var(--blue);font-weight:700;">物件一覧</a></li>
-            <li><a href="{{ url('/') }}#contact" class="navbar__link navbar__link--cta" style="background:var(--blue);color:#fff !important;">お問い合わせ</a></li>
+        <ul class="navbar__menu">
+            <li><a href="{{ url('/') }}" class="navbar__link">ホーム</a></li>
+            <li><a href="{{ route('properties.index') }}" class="navbar__link navbar__link--active">物件一覧</a></li>
+            <li><a href="{{ url('/') }}#contact" class="navbar__link navbar__link--cta">お問い合わせ</a></li>
         </ul>
     </div>
 </nav>

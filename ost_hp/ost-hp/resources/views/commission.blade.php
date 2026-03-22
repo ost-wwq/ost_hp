@@ -633,28 +633,6 @@ const revealObs = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 revealEls.forEach(el => revealObs.observe(el));
 
-// Mobile navbar
-const navToggle = document.getElementById('navToggle');
-const navMenu = document.getElementById('navMenu');
-if (navToggle) navToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
-
-// Dropdowns (複数対応)
-document.querySelectorAll('.navbar__dropdown').forEach(dd => {
-    const toggle = dd.querySelector('.navbar__dropdown-toggle');
-    if (toggle) {
-        toggle.addEventListener('click', e => {
-            e.preventDefault();
-            const wasOpen = dd.classList.contains('is-open');
-            document.querySelectorAll('.navbar__dropdown').forEach(d => d.classList.remove('is-open'));
-            if (!wasOpen) dd.classList.add('is-open');
-        });
-    }
-});
-document.addEventListener('click', e => {
-    if (!e.target.closest('.navbar__dropdown')) {
-        document.querySelectorAll('.navbar__dropdown').forEach(d => d.classList.remove('is-open'));
-    }
-});
 </script>
 
 @endsection

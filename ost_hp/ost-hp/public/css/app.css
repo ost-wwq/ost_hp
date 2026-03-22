@@ -197,6 +197,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .navbar.scrolled .navbar__toggle span { background: var(--dark); }
 
+/* ---- Dark navbar (inner pages) ---- */
+.navbar--dark { background: var(--dark); }
+.navbar--dark .navbar__logo { color: var(--white); }
+.navbar--dark .navbar__link { color: rgba(255,255,255,.85); }
+.navbar--dark .navbar__link:hover { color: var(--white); background: rgba(255,255,255,.1); }
+.navbar--dark .navbar__link--active { color: var(--white); background: rgba(255,255,255,.15); font-weight: 700; }
+.navbar--dark .navbar__link--cta { background: var(--blue); color: var(--white) !important; }
+.navbar--dark .navbar__link--cta:hover { background: var(--blue-dark) !important; }
+.navbar--dark .navbar__toggle span { background: var(--white); }
+
 /* ---- Dropdown ---- */
 .navbar__dropdown { position: relative; }
 .navbar__dropdown-toggle {
