@@ -95,16 +95,24 @@
                 <div class="card__body" style="display:flex;flex-direction:column;gap:20px;">
 
                     <div>
-                        <label class="form-label">メイン画像</label>
+                        <label class="form-label">メイン画像 / PDF</label>
                         @if($property->main_image)
                             <div style="margin-bottom:10px;">
-                                <img src="{{ asset('uploads/'.$property->main_image) }}" alt=""
-                                     style="height:120px;object-fit:cover;border-radius:8px;border:1px solid #e4e6f0;">
+                                @if(str_ends_with(strtolower($property->main_image), '.pdf'))
+                                    <a href="{{ asset('uploads/'.$property->main_image) }}" target="_blank"
+                                       style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#f1f5f9;border:1px solid #e4e6f0;border-radius:8px;color:#334155;text-decoration:none;font-size:.85rem;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                        {{ basename($property->main_image) }}
+                                    </a>
+                                @else
+                                    <img src="{{ asset('uploads/'.$property->main_image) }}" alt=""
+                                         style="height:120px;object-fit:cover;border-radius:8px;border:1px solid #e4e6f0;">
+                                @endif
                             </div>
                         @endif
-                        <input type="file" name="main_image" class="form-input" accept="image/*"
+                        <input type="file" name="main_image" class="form-input" accept="image/*,application/pdf"
                                style="padding:8px;">
-                        <div style="font-size:.78rem;color:#7b7b9a;margin-top:4px;">JPG・PNG・WEBP / 最大5MB</div>
+                        <div style="font-size:.78rem;color:#7b7b9a;margin-top:4px;">JPG・PNG・WEBP・PDF / 最大5MB</div>
                     </div>
 
                     <div>

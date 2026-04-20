@@ -2,7 +2,7 @@ version: '3.8'
 services:
   ost-hp-admin:
     container_name: ost-hp-admin
-    image: webdevops/php-nginx:8.3-alpine
+    image: webdevops/php-nginx:8.4-alpine
     volumes:
       - ../:/app
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
@@ -12,6 +12,8 @@ services:
     environment:
       - WEB_DOCUMENT_ROOT=/app/public
       - TZ=Asia/Tokyo
+      - PHP_UPLOAD_MAX_FILESIZE=20M
+      - PHP_POST_MAX_SIZE=20M
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:

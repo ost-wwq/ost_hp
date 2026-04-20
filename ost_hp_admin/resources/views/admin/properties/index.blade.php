@@ -84,7 +84,7 @@
                         @endif
                     </td>
                     <td style="font-weight:600;">
-                        <a href="{{ route('admin.properties.edit', $p) }}" style="color:#2f7cff;">{{ $p->title }}</a>
+                        <a href="{{ route('admin.properties.show', $p) }}" style="color:#2f7cff;">{{ $p->title }}</a>
                         @if($p->rooms)<div style="font-size:.78rem;color:#7b7b9a;font-weight:400;">{{ $p->rooms }}</div>@endif
                     </td>
                     <td><span style="font-size:.82rem;">{{ $p->typeLabel() }}</span></td>

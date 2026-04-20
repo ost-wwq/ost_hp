@@ -46,6 +46,11 @@ class PropertyController extends Controller
             ->with('success', '物件を登録しました。');
     }
 
+    public function show(Property $property)
+    {
+        return view('admin.properties.show', compact('property'));
+    }
+
     public function edit(Property $property)
     {
         return view('admin.properties.form', compact('property'));
@@ -119,6 +124,7 @@ class PropertyController extends Controller
             'rooms'         => ['nullable', 'string', 'max:50'],
             'age'           => ['nullable', 'integer', 'min:0'],
             'description'   => ['nullable', 'string', 'max:5000'],
+            'main_image'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
         ]);
     }
 
