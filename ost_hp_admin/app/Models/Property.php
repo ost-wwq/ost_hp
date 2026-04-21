@@ -10,14 +10,17 @@ class Property extends Model
         'title', 'property_type', 'status', 'price',
         'address', 'area', 'rooms', 'age',
         'description', 'main_image', 'images', 'published', 'confirm_token', 'confirm_pin',
+        'viewing_enabled', 'viewing_keybbox_number', 'viewing_keybbox_image',
+        'viewing_keybbox_description', 'viewing_token',
     ];
 
     protected $casts = [
-        'images'    => 'array',
-        'published' => 'boolean',
-        'price'     => 'integer',
-        'area'      => 'decimal:2',
-        'age'       => 'integer',
+        'images'          => 'array',
+        'published'       => 'boolean',
+        'viewing_enabled' => 'boolean',
+        'price'           => 'integer',
+        'area'            => 'decimal:2',
+        'age'             => 'integer',
     ];
 
     // 公開中の物件のみ

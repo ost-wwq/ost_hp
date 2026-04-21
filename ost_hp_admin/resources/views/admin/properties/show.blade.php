@@ -239,6 +239,142 @@
             </div>
         </div>
 
+        {{-- 内見予約設定 --}}
+        <div class="card">
+            <div class="card__header"><div class="card__title">内見予約設定</div></div>
+            <div class="card__body" style="display:flex;flex-direction:column;gap:16px;">
+
+                @if($property->viewing_enabled)
+                    @php $viewingUrl = route('property.viewing', $property->viewing_token); @endphp
+
+                    {{-- 有効状態 --}}
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <div style="font-size:.82rem;font-weight:600;color:#1a7a5a;">有効</div>
+                        <form method="POST" action="{{ route('admin.properties.toggle-viewing', $property) }}">
+                            @csrf @method('PATCH')
+                            <button type="submit" class="btn btn--ghost btn--sm"
+                                    onclick="return confirm('内見予約設定を無効にしますか？')">無効にする</button>
+                        </form>
+                    </div>
+
+                    {{-- 設定値編集フォーム --}}
+                    <form method="POST" action="{{ route('admin.properties.update-viewing', $property) }}"
+                          enctype="multipart/form-data" style="display:flex;flex-direction:column;gap:12px;">
+                        @csrf @method('PATCH')
+
+                        <div>
+                            <label style="font-size:.75rem;font-weight:600;color:#7b7b9a;display:block;margin-bottom:4px;">キーボックス番号</label>
+                            <input type="text" name="viewing_keybbox_number"
+                                   value="{{ old('viewing_keybbox_number', $property->viewing_keybbox_number) }}"
+                                   placeholder="例：1234"
+                                   style="width:100%;padding:7px 10px;border:1px solid #e4e6f0;border-radius:6px;font-size:.85rem;box-sizing:border-box;">
+                        </div>
+
+                        <div>
+                            <label style="font-size:.75rem;font-weight:600;color:#7b7b9a;display:block;margin-bottom:4px;">キーボックス画像</label>
+                            @if($property->viewing_keybbox_image)
+                                <div style="margin-bottom:6px;">
+                                    <img src="{{ asset('uploads/'.$property->viewing_keybbox_image) }}" alt=""
+                                         id="update-keybbox-preview"
+                                         style="width:100%;max-height:140px;object-fit:cover;border-radius:6px;border:1px solid #e4e6f0;">
+                                    <label style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:.75rem;color:#7b7b9a;cursor:pointer;">
+                                        <input type="checkbox" name="delete_viewing_keybbox_image" value="1"> 画像を削除
+                                    </label>
+                                </div>
+                            @else
+                                <img id="update-keybbox-preview"
+                                     style="display:none;width:100%;max-height:140px;object-fit:cover;border-radius:6px;border:1px solid #e4e6f0;margin-bottom:6px;">
+                            @endif
+                            <input type="file" name="viewing_keybbox_image" accept="image/*"
+                                   style="font-size:.78rem;width:100%;"
+                                   onchange="previewImage(this, 'update-keybbox-preview')">
+                        </div>
+
+                        <div>
+                            <label style="font-size:.75rem;font-weight:600;color:#7b7b9a;display:block;margin-bottom:4px;">説明文</label>
+                            <textarea name="viewing_keybbox_description" rows="3"
+                                      placeholder="内見時の注意事項など"
+                                      style="width:100%;padding:7px 10px;border:1px solid #e4e6f0;border-radius:6px;font-size:.82rem;resize:vertical;box-sizing:border-box;">{{ old('viewing_keybbox_description', $property->viewing_keybbox_description) }}</textarea>
+                        </div>
+
+                        @if($errors->hasAny(['viewing_keybbox_number', 'viewing_keybbox_description', 'viewing_keybbox_image']))
+                            <div style="font-size:.75rem;color:#dc2626;">入力内容を確認してください。</div>
+                        @endif
+
+                        <button type="submit" class="btn btn--primary btn--sm">設定を保存</button>
+                    </form>
+
+                    {{-- 自動生成された内見予約URL＋QRコード --}}
+                    <div>
+                        <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">内見予約リンク（自動生成）</div>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <input type="text" value="{{ $viewingUrl }}" readonly id="viewing-url-input"
+                                   style="flex:1;font-size:.7rem;padding:6px 8px;border:1px solid #e4e6f0;border-radius:6px;background:#f8f9ff;color:#334155;min-width:0;">
+                            <button type="button" onclick="copyViewingUrl()"
+                                    style="flex-shrink:0;padding:6px 10px;font-size:.72rem;background:#f0f2f8;border:1px solid #e4e6f0;border-radius:6px;cursor:pointer;">コピー</button>
+                        </div>
+                        <a href="{{ $viewingUrl }}" target="_blank"
+                           style="display:inline-block;margin-top:5px;font-size:.75rem;color:#2f7cff;">↗ 予約ページを開く</a>
+                    </div>
+
+                    <div>
+                        <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:8px;">QRコード</div>
+                        <div style="border:1px solid #e4e6f0;border-radius:8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#fff;padding:12px;">
+                            <div id="viewing-qr-container"></div>
+                        </div>
+                        <button type="button" onclick="downloadViewingQr()"
+                                style="margin-top:8px;width:100%;padding:7px;font-size:.78rem;background:#f0f2f8;border:1px solid #e4e6f0;border-radius:6px;cursor:pointer;">
+                            ↓ QRコードをダウンロード
+                        </button>
+                    </div>
+
+                    @if(!$property->confirm_token)
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+                    @endif
+                    <script>
+                        (function() {
+                            var viewingQr = new QRCode(document.getElementById('viewing-qr-container'), {
+                                text: '{{ addslashes($viewingUrl) }}',
+                                width: 200,
+                                height: 200,
+                                colorDark: '#000000',
+                                colorLight: '#ffffff',
+                                correctLevel: QRCode.CorrectLevel.H
+                            });
+
+                            window.copyViewingUrl = function() {
+                                var input = document.getElementById('viewing-url-input');
+                                input.select();
+                                document.execCommand('copy');
+                                alert('URLをコピーしました');
+                            };
+
+                            window.downloadViewingQr = function() {
+                                var canvas = document.querySelector('#viewing-qr-container canvas');
+                                if (canvas) {
+                                    var a = document.createElement('a');
+                                    a.download = '内見予約QR_{{ $property->id }}.png';
+                                    a.href = canvas.toDataURL('image/png');
+                                    a.click();
+                                }
+                            };
+                        })();
+                    </script>
+
+                @else
+
+                    {{-- 無効状態 --}}
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <div style="font-size:.82rem;color:#7b7b9a;">内見予約未設定</div>
+                        <button type="button" class="btn btn--primary btn--sm"
+                                onclick="document.getElementById('viewing-enable-dialog').showModal()">有効にする</button>
+                    </div>
+
+                @endif
+
+            </div>
+        </div>
+
         {{-- 公開設定 --}}
         <div class="card">
             <div class="card__header"><div class="card__title">公開設定</div></div>
@@ -275,5 +411,100 @@
     </div>
 
 </div>
+
+{{-- 内見予約 有効化ダイアログ --}}
+@if(!$property->viewing_enabled)
+<style>
+    #viewing-enable-dialog {
+        border: none;
+        border-radius: 14px;
+        padding: 0;
+        width: 420px;
+        max-width: 95vw;
+        box-shadow: 0 8px 40px rgba(0,0,0,.22);
+        background: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+    }
+    #viewing-enable-dialog::backdrop {
+        background: rgba(0,0,0,.45);
+    }
+</style>
+<dialog id="viewing-enable-dialog">
+    <form method="POST" action="{{ route('admin.properties.toggle-viewing', $property) }}"
+          enctype="multipart/form-data">
+        @csrf @method('PATCH')
+
+        <div style="padding:20px 24px 16px;border-bottom:1px solid #f0f2f8;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:1rem;font-weight:700;">内見予約設定</span>
+            <button type="button" onclick="document.getElementById('viewing-enable-dialog').close()"
+                    style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#7b7b9a;line-height:1;">×</button>
+        </div>
+
+        <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;">
+
+            <div>
+                <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:5px;">キーボックス番号</label>
+                <input type="text" name="viewing_keybbox_number"
+                       value="{{ old('viewing_keybbox_number') }}"
+                       placeholder="例：1234"
+                       style="width:100%;padding:8px 12px;border:1px solid #e4e6f0;border-radius:8px;font-size:.9rem;box-sizing:border-box;">
+            </div>
+
+            <div>
+                <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:5px;">キーボックス画像</label>
+                <img id="dialog-keybbox-preview"
+                     style="display:none;width:100%;max-height:160px;object-fit:cover;border-radius:8px;border:1px solid #e4e6f0;margin-bottom:6px;">
+                <input type="file" name="viewing_keybbox_image" accept="image/*"
+                       style="font-size:.85rem;width:100%;"
+                       onchange="previewImage(this, 'dialog-keybbox-preview')">
+            </div>
+
+            <div>
+                <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:5px;">説明文</label>
+                <textarea name="viewing_keybbox_description" rows="3"
+                          placeholder="内見時の注意事項など"
+                          style="width:100%;padding:8px 12px;border:1px solid #e4e6f0;border-radius:8px;font-size:.85rem;resize:vertical;box-sizing:border-box;">{{ old('viewing_keybbox_description') }}</textarea>
+            </div>
+
+            @if($errors->hasAny(['viewing_keybbox_number', 'viewing_keybbox_description', 'viewing_keybbox_image']))
+                <div style="font-size:.78rem;color:#dc2626;">入力内容を確認してください。</div>
+            @endif
+
+        </div>
+
+        <div style="padding:12px 24px 20px;display:flex;justify-content:flex-end;gap:10px;">
+            <button type="button" onclick="document.getElementById('viewing-enable-dialog').close()"
+                    class="btn btn--ghost btn--sm">キャンセル</button>
+            <button type="submit" class="btn btn--primary btn--sm">有効にする</button>
+        </div>
+    </form>
+</dialog>
+
+<script>
+    @if($errors->hasAny(['viewing_keybbox_number', 'viewing_keybbox_description', 'viewing_keybbox_image']))
+        document.getElementById('viewing-enable-dialog').showModal();
+    @endif
+</script>
+@endif
+
+<script>
+    function previewImage(input, previewId) {
+        var preview = document.getElementById(previewId);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.style.display = 'none';
+        }
+    }
+</script>
 
 @endsection

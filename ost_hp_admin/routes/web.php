@@ -16,6 +16,14 @@ Route::get('/', fn() => redirect()->route('admin.login'));
 Route::get ('confirm/{token}',        [PropertyConfirmController::class, 'show'])->name('property.confirm');
 Route::post('confirm/{token}/verify', [PropertyConfirmController::class, 'verify'])->name('property.confirm.verify');
 
+// プライバシーポリシー
+Route::get('privacy-policy', fn() => view('privacy-policy'))->name('privacy-policy');
+
+// 内見予約ページ（認証不要）
+Route::get ('viewing/{token}',          [\App\Http\Controllers\PropertyViewingController::class, 'show'])->name('property.viewing');
+Route::post('viewing/{token}',          [\App\Http\Controllers\PropertyViewingController::class, 'store'])->name('property.viewing.store');
+Route::get ('viewing/{token}/complete', [\App\Http\Controllers\PropertyViewingController::class, 'complete'])->name('property.viewing.complete');
+
 // ログイン
 Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
     Route::get('login',  [AuthController::class, 'showLogin'])->name('login');
@@ -37,6 +45,8 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::delete('properties/{property}',      [PropertyController::class, 'destroy'])->name('properties.destroy');
         Route::patch('properties/{property}/toggle-publish',  [PropertyController::class, 'togglePublish'])->name('properties.toggle-publish');
         Route::patch('properties/{property}/toggle-confirm',  [PropertyController::class, 'toggleConfirm'])->name('properties.toggle-confirm');
+        Route::patch('properties/{property}/toggle-viewing',  [PropertyController::class, 'toggleViewing'])->name('properties.toggle-viewing');
+        Route::patch('properties/{property}/update-viewing',  [PropertyController::class, 'updateViewing'])->name('properties.update-viewing');
 
         // お知らせ管理
         Route::get('news',               [NewsController::class, 'index'])->name('news.index');

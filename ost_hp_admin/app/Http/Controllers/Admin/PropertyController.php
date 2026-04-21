@@ -127,6 +127,63 @@ class PropertyController extends Controller
         return back()->with('success', $msg);
     }
 
+    public function toggleViewing(Property $property, Request $request)
+    {
+        if ($property->viewing_enabled) {
+            $property->update(['viewing_enabled' => false]);
+            return back()->with('success', '内見予約設定を無効にしました。');
+        }
+
+        $request->validate([
+            'viewing_keybbox_number'      => ['nullable', 'string', 'max:100'],
+            'viewing_keybbox_image'       => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'viewing_keybbox_description' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        $data = [
+            'viewing_enabled' => true,
+            'viewing_token'   => $property->viewing_token ?? Str::uuid(),
+        ];
+        $data['viewing_keybbox_number']      = $request->input('viewing_keybbox_number');
+        $data['viewing_keybbox_description'] = $request->input('viewing_keybbox_description');
+
+        if ($request->hasFile('viewing_keybbox_image')) {
+            $this->deleteFile($property->viewing_keybbox_image);
+            $data['viewing_keybbox_image'] = $request->file('viewing_keybbox_image')
+                ->store('properties', 'public_uploads');
+        }
+
+        $property->update($data);
+
+        return back()->with('success', '内見予約設定を有効にしました。');
+    }
+
+    public function updateViewing(Property $property, Request $request)
+    {
+        $request->validate([
+            'viewing_keybbox_number'      => ['nullable', 'string', 'max:100'],
+            'viewing_keybbox_image'       => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'viewing_keybbox_description' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        $data = [];
+        $data['viewing_keybbox_number']      = $request->input('viewing_keybbox_number');
+        $data['viewing_keybbox_description'] = $request->input('viewing_keybbox_description');
+
+        if ($request->hasFile('viewing_keybbox_image')) {
+            $this->deleteFile($property->viewing_keybbox_image);
+            $data['viewing_keybbox_image'] = $request->file('viewing_keybbox_image')
+                ->store('properties', 'public_uploads');
+        } elseif ($request->boolean('delete_viewing_keybbox_image')) {
+            $this->deleteFile($property->viewing_keybbox_image);
+            $data['viewing_keybbox_image'] = null;
+        }
+
+        $property->update($data);
+
+        return back()->with('success', '内見予約設定を更新しました。');
+    }
+
     // ---- private helpers ----
 
     private function validateRequest(Request $request): array

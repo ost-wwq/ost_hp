@@ -109,6 +109,20 @@
             <div class="value">{{ $property->rooms }}</div>
         </div>
         @endif
+        @if($property->viewing_enabled && $property->viewing_token)
+        <a href="{{ route('property.viewing', $property->viewing_token) }}"
+           style="
+               display:flex;align-items:center;justify-content:center;gap:8px;
+               width:100%;padding:14px;border-radius:10px;
+               background:#2f7cff;color:#fff;font-size:.95rem;font-weight:700;
+               text-decoration:none;letter-spacing:.03em;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            内見予約をする
+        </a>
+        @endif
+
         <div class="note">
             このページは担当者が発行した確認用URLです。<br>
             表示されている情報は {{ now()->format('Y年m月d日 H:i') }} 時点の最新状態です。
