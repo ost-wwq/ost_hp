@@ -6,10 +6,15 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\PropertyConfirmController;
 use App\Http\Middleware\AdminAuth;
 
 // ルートアクセス → 管理画面ログインへリダイレクト
 Route::get('/', fn() => redirect()->route('admin.login'));
+
+// 物件最新状態確認ページ（認証不要・PIN保護）
+Route::get ('confirm/{token}',        [PropertyConfirmController::class, 'show'])->name('property.confirm');
+Route::post('confirm/{token}/verify', [PropertyConfirmController::class, 'verify'])->name('property.confirm.verify');
 
 // ログイン
 Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
@@ -30,7 +35,8 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::get('properties/{property}/edit',    [PropertyController::class, 'edit'])->name('properties.edit');
         Route::put('properties/{property}',         [PropertyController::class, 'update'])->name('properties.update');
         Route::delete('properties/{property}',      [PropertyController::class, 'destroy'])->name('properties.destroy');
-        Route::patch('properties/{property}/toggle-publish', [PropertyController::class, 'togglePublish'])->name('properties.toggle-publish');
+        Route::patch('properties/{property}/toggle-publish',  [PropertyController::class, 'togglePublish'])->name('properties.toggle-publish');
+        Route::patch('properties/{property}/toggle-confirm',  [PropertyController::class, 'toggleConfirm'])->name('properties.toggle-confirm');
 
         // お知らせ管理
         Route::get('news',               [NewsController::class, 'index'])->name('news.index');

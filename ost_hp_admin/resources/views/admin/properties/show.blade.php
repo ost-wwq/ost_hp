@@ -142,6 +142,103 @@
     {{-- 右カラム --}}
     <div style="display:flex;flex-direction:column;gap:20px;">
 
+        {{-- 最新状態確認URL --}}
+        <div class="card">
+            <div class="card__header"><div class="card__title">最新状態確認</div></div>
+            <div class="card__body" style="display:flex;flex-direction:column;gap:16px;">
+
+                @if($property->confirm_token)
+                    @php $confirmUrl = route('property.confirm', $property->confirm_token); @endphp
+
+                    {{-- 無効にする --}}
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <div>
+                            <div style="font-size:.82rem;font-weight:600;color:#1a7a5a;">有効</div>
+                            <div style="font-size:.72rem;color:#7b7b9a;margin-top:1px;">確認番号：{{ $property->confirm_pin }}</div>
+                        </div>
+                        <form method="POST" action="{{ route('admin.properties.toggle-confirm', $property) }}">
+                            @csrf @method('PATCH')
+                            <button type="submit" class="btn btn--ghost btn--sm"
+                                    onclick="return confirm('確認URLを無効にしますか？')">無効にする</button>
+                        </form>
+                    </div>
+
+                    {{-- URL --}}
+                    <div>
+                        <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">確認URL</div>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <input type="text" value="{{ $confirmUrl }}" readonly id="confirm-url-input"
+                                   style="flex:1;font-size:.7rem;padding:6px 8px;border:1px solid #e4e6f0;border-radius:6px;background:#f8f9ff;color:#334155;min-width:0;">
+                            <button type="button" onclick="copyConfirmUrl()"
+                                    style="flex-shrink:0;padding:6px 10px;font-size:.72rem;background:#f0f2f8;border:1px solid #e4e6f0;border-radius:6px;cursor:pointer;">コピー</button>
+                        </div>
+                        <a href="{{ $confirmUrl }}" target="_blank"
+                           style="display:inline-block;margin-top:5px;font-size:.75rem;color:#2f7cff;">↗ 確認ページを開く</a>
+                    </div>
+
+                    {{-- QRコード --}}
+                    <div>
+                        <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:8px;">QRコード</div>
+                        <div style="border:1px solid #e4e6f0;border-radius:8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#fff;padding:12px;">
+                            <div id="qr-container"></div>
+                        </div>
+                        <button type="button" onclick="downloadQr()"
+                                style="margin-top:8px;width:100%;padding:7px;font-size:.78rem;background:#f0f2f8;border:1px solid #e4e6f0;border-radius:6px;cursor:pointer;">
+                            ↓ QRコードをダウンロード
+                        </button>
+                    </div>
+
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+                    <script>
+                        var qr = new QRCode(document.getElementById('qr-container'), {
+                            text: '{{ $confirmUrl }}',
+                            width: 200,
+                            height: 200,
+                            colorDark: '#000000',
+                            colorLight: '#ffffff',
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+
+                        function copyConfirmUrl() {
+                            var input = document.getElementById('confirm-url-input');
+                            input.select();
+                            document.execCommand('copy');
+                            alert('URLをコピーしました');
+                        }
+
+                        function downloadQr() {
+                            var canvas = document.querySelector('#qr-container canvas');
+                            if (canvas) {
+                                var a = document.createElement('a');
+                                a.download = '確認QR_{{ $property->id }}.png';
+                                a.href = canvas.toDataURL('image/png');
+                                a.click();
+                            }
+                        }
+                    </script>
+
+                @else
+                    {{-- 有効にする（PIN入力フォーム） --}}
+                    <div style="font-size:.82rem;color:#7b7b9a;margin-bottom:4px;">確認不可（URLが無効です）</div>
+                    <form method="POST" action="{{ route('admin.properties.toggle-confirm', $property) }}"
+                          style="display:flex;flex-direction:column;gap:10px;">
+                        @csrf @method('PATCH')
+                        <div>
+                            <label style="font-size:.78rem;font-weight:600;display:block;margin-bottom:6px;">4桁の確認番号を設定</label>
+                            <input type="text" name="confirm_pin" inputmode="numeric" maxlength="4"
+                                   pattern="\d{4}" placeholder="0000" required
+                                   style="width:100%;padding:8px 12px;border:1px solid #e4e6f0;border-radius:8px;font-size:1.1rem;font-weight:700;letter-spacing:.3em;text-align:center;">
+                            @error('confirm_pin')
+                                <div style="font-size:.75rem;color:#dc2626;margin-top:4px;">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--sm">有効にする</button>
+                    </form>
+                @endif
+
+            </div>
+        </div>
+
         {{-- 公開設定 --}}
         <div class="card">
             <div class="card__header"><div class="card__title">公開設定</div></div>

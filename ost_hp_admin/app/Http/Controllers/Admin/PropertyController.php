@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PropertyController extends Controller
 {
@@ -107,6 +108,22 @@ class PropertyController extends Controller
     {
         $property->update(['published' => !$property->published]);
         $msg = $property->published ? '物件を公開しました。' : '物件を非公開にしました。';
+        return back()->with('success', $msg);
+    }
+
+    public function toggleConfirm(Property $property, Request $request)
+    {
+        if ($property->confirm_token) {
+            $property->update(['confirm_token' => null, 'confirm_pin' => null]);
+            $msg = '最新状態確認URLを無効にしました。';
+        } else {
+            $request->validate(['confirm_pin' => ['required', 'digits:4']]);
+            $property->update([
+                'confirm_token' => Str::uuid(),
+                'confirm_pin'   => $request->confirm_pin,
+            ]);
+            $msg = '最新状態確認URLを有効にしました。';
+        }
         return back()->with('success', $msg);
     }
 

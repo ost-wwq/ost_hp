@@ -9,7 +9,7 @@ class Property extends Model
     protected $fillable = [
         'title', 'property_type', 'status', 'price',
         'address', 'area', 'rooms', 'age',
-        'description', 'main_image', 'images', 'published',
+        'description', 'main_image', 'images', 'published', 'confirm_token', 'confirm_pin',
     ];
 
     protected $casts = [
