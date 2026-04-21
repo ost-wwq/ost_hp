@@ -25,7 +25,9 @@
             width: 100%;
             max-width: 480px;
         }
-        .card__header { padding: 20px 24px; border-bottom: 1px solid #f0f2f8; }
+        .card__header { padding: 20px 24px; border-bottom: 1px solid #f0f2f8; display:flex; align-items:center; justify-content:space-between; }
+        .card__header-left { flex:1; }
+        .card__header-date { font-size:.72rem; color:#7b7b9a; text-align:right; white-space:nowrap; }
         .card__body { padding: 24px; }
         .row { margin-bottom: 18px; }
         .row:last-child { margin-bottom: 0; }
@@ -53,8 +55,13 @@
 @endphp
 <div class="card">
     <div class="card__header">
-        <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">最新状態（ご紹介可否）確認</div>
-        <div style="font-size:1.1rem;font-weight:700;">{{ $property->title }}</div>
+        <div class="card__header-left">
+            <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">最新状態（ご紹介可否）確認</div>
+            <div style="font-size:1.1rem;font-weight:700;">{{ $property->title }}</div>
+        </div>
+        <div class="card__header-date">
+            {{ now()->format('Y年m月d日') }}<br>{{ now()->format('H:i') }}
+        </div>
     </div>
     <div class="card__body">
         @if($introType === 'available')
