@@ -53,4 +53,7 @@ Route::prefix('broker')->name('broker.')->group(function () {
     Route::post('/', [BrokerController::class, 'verifyPin'])->name('verify');
     Route::get('/properties', [BrokerController::class, 'properties'])->name('properties');
     Route::post('/logout', [BrokerController::class, 'logout'])->name('logout');
+    Route::get('/properties/{property}/consent', [BrokerController::class, 'showConsent'])->name('consent.show');
+    Route::post('/properties/{property}/consent', [BrokerController::class, 'storeConsent'])->name('consent.store');
+    Route::get('/properties/{property}/consent/complete', [BrokerController::class, 'consentComplete'])->name('consent.complete');
 });

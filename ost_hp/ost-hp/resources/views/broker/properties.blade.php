@@ -125,10 +125,30 @@
             border-radius: 50px;
         }
 
+        /* Consent button */
+        .btn-consent {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, #1a4cbd 0%, #2f7cff 100%);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: .78rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: opacity .2s;
+        }
+        .btn-consent:hover { opacity: .85; }
+
         /* Property rows */
         .prop-row {
             display: grid;
-            grid-template-columns: auto 1fr auto auto;
+            grid-template-columns: auto 1fr auto auto auto;
             gap: 0 16px;
             align-items: center;
             background: #fff;
@@ -270,9 +290,10 @@
             .prop-row { break-inside: avoid; }
         }
         @media (max-width: 600px) {
-            .prop-row { grid-template-columns: auto 1fr; grid-template-rows: auto auto; }
+            .prop-row { grid-template-columns: auto 1fr; grid-template-rows: auto auto auto; }
             .prop-row__price { grid-column: 2; }
             .prop-row__status { grid-column: 1 / -1; text-align: left; }
+            .prop-row > div:last-child { grid-column: 1 / -1; }
             .summary { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
@@ -394,6 +415,9 @@
                         @php $st = $statusMap[$p->status] ?? $statusMap['closed']; @endphp
                         <span class="status-badge status-badge--{{ $st['class'] }}">{{ $st['label'] }}</span>
                     </div>
+                    <div>
+                        <a href="{{ route('broker.consent.show', $p) }}" class="btn-consent">📝 掲載承諾</a>
+                    </div>
                 </div>
                 @endforeach
             </div>
@@ -420,6 +444,9 @@
                 <div class="prop-row__status">
                     @php $st = $statusMap[$p->status] ?? $statusMap['closed']; @endphp
                     <span class="status-badge status-badge--{{ $st['class'] }}">{{ $st['label'] }}</span>
+                </div>
+                <div>
+                    <a href="{{ route('broker.consent.show', $p) }}" class="btn-consent">📝 掲載承諾</a>
                 </div>
             </div>
             @endforeach

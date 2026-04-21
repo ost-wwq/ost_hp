@@ -115,13 +115,38 @@
                display:flex;align-items:center;justify-content:center;gap:8px;
                width:100%;padding:14px;border-radius:10px;
                background:#2f7cff;color:#fff;font-size:.95rem;font-weight:700;
-               text-decoration:none;letter-spacing:.03em;">
+               text-decoration:none;letter-spacing:.03em;margin-bottom:10px;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
             内見予約をする
         </a>
         @endif
+        <a href="{{ route('property.consent', $property->confirm_token) }}"
+           style="
+               display:flex;align-items:center;justify-content:center;gap:8px;
+               width:100%;padding:14px;border-radius:10px;
+               background:#fff;color:#2f7cff;font-size:.95rem;font-weight:700;
+               text-decoration:none;letter-spacing:.03em;
+               border:2px solid #2f7cff;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+            掲載承諾を申込む
+        </a>
+
+        <a href="{{ route('property.records.email', $property->confirm_token) }}"
+           style="
+               display:flex;align-items:center;justify-content:center;gap:8px;
+               width:100%;padding:14px;border-radius:10px;margin-top:10px;
+               background:#f8f9ff;color:#334155;font-size:.88rem;font-weight:600;
+               text-decoration:none;letter-spacing:.02em;
+               border:1px solid #e4e6f0;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/>
+            </svg>
+            内見予約・掲載承諾を確認する
+        </a>
 
         <div class="note">
             このページは担当者が発行した確認用URLです。<br>

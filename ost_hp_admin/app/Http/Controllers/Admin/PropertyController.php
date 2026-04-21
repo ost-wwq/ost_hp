@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Property;
+use App\Models\PropertyConsent;
+use App\Models\ViewingReservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -182,6 +184,30 @@ class PropertyController extends Controller
         $property->update($data);
 
         return back()->with('success', '内見予約設定を更新しました。');
+    }
+
+    public function consents(Property $property)
+    {
+        $consents = $property->consents()->latest()->get();
+        return view('admin.properties.consents', compact('property', 'consents'));
+    }
+
+    public function consentShow(Property $property, PropertyConsent $consent)
+    {
+        abort_if($consent->property_id !== $property->id, 404);
+        return view('admin.properties.consent-show', compact('property', 'consent'));
+    }
+
+    public function viewings(Property $property)
+    {
+        $viewings = $property->viewingReservations()->latest()->get();
+        return view('admin.properties.viewings', compact('property', 'viewings'));
+    }
+
+    public function viewingShow(Property $property, ViewingReservation $viewing)
+    {
+        abort_if($viewing->property_id !== $property->id, 404);
+        return view('admin.properties.viewing-show', compact('property', 'viewing'));
     }
 
     // ---- private helpers ----

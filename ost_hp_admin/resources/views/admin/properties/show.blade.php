@@ -25,7 +25,21 @@
             @endif
         </div>
     </div>
-    <div style="display:flex;gap:8px;flex-shrink:0;">
+    <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+        <a href="{{ route('admin.properties.consents', $property) }}" class="btn btn--ghost btn--sm">
+            物件掲載承諾一覧確認
+            @php $consentCount = $property->consents()->count(); @endphp
+            @if($consentCount > 0)
+                <span style="display:inline-block;margin-left:4px;padding:1px 7px;border-radius:50px;font-size:.7rem;font-weight:700;background:#2f7cff;color:#fff;">{{ $consentCount }}</span>
+            @endif
+        </a>
+        <a href="{{ route('admin.properties.viewings', $property) }}" class="btn btn--ghost btn--sm">
+            内見予約申し込み一覧確認
+            @php $viewingCount = $property->viewingReservations()->count(); @endphp
+            @if($viewingCount > 0)
+                <span style="display:inline-block;margin-left:4px;padding:1px 7px;border-radius:50px;font-size:.7rem;font-weight:700;background:#2f7cff;color:#fff;">{{ $viewingCount }}</span>
+            @endif
+        </a>
         <form method="POST" action="{{ route('admin.properties.toggle-publish', $property) }}" style="display:inline;">
             @csrf @method('PATCH')
             <button class="btn btn--sm {{ $property->published ? 'btn--ghost' : 'btn--primary' }}">

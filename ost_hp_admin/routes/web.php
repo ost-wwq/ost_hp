@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\PropertyConfirmController;
+use App\Http\Controllers\PropertyConsentController;
+use App\Http\Controllers\PropertyRecordsController;
 use App\Http\Middleware\AdminAuth;
 
 // ルートアクセス → 管理画面ログインへリダイレクト
@@ -15,6 +17,20 @@ Route::get('/', fn() => redirect()->route('admin.login'));
 // 物件最新状態確認ページ（認証不要・PIN保護）
 Route::get ('confirm/{token}',        [PropertyConfirmController::class, 'show'])->name('property.confirm');
 Route::post('confirm/{token}/verify', [PropertyConfirmController::class, 'verify'])->name('property.confirm.verify');
+
+// 内見予約・掲載承諾 確認（メール認証）
+Route::get ('confirm/{token}/records',             [PropertyRecordsController::class, 'showEmailForm'])->name('property.records.email');
+Route::post('confirm/{token}/records/send-code',   [PropertyRecordsController::class, 'sendCode'])->name('property.records.send-code');
+Route::get ('confirm/{token}/records/code',        [PropertyRecordsController::class, 'showCodeForm'])->name('property.records.code');
+Route::post('confirm/{token}/records/verify-code', [PropertyRecordsController::class, 'verifyCode'])->name('property.records.verify-code');
+Route::get ('confirm/{token}/records/list',        [PropertyRecordsController::class, 'list'])->name('property.records.list');
+Route::get ('confirm/{token}/records/viewing/{id}',[PropertyRecordsController::class, 'viewingDetail'])->name('property.records.viewing');
+Route::get ('confirm/{token}/records/consent/{id}',[PropertyRecordsController::class, 'consentDetail'])->name('property.records.consent');
+
+// 掲載承諾ページ（認証不要・confirm_token共用）
+Route::get ('consent/{token}',          [PropertyConsentController::class, 'show'])->name('property.consent');
+Route::post('consent/{token}',          [PropertyConsentController::class, 'store'])->name('property.consent.store');
+Route::get ('consent/{token}/complete', [PropertyConsentController::class, 'complete'])->name('property.consent.complete');
 
 // プライバシーポリシー
 Route::get('privacy-policy', fn() => view('privacy-policy'))->name('privacy-policy');
@@ -47,6 +63,10 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::patch('properties/{property}/toggle-confirm',  [PropertyController::class, 'toggleConfirm'])->name('properties.toggle-confirm');
         Route::patch('properties/{property}/toggle-viewing',  [PropertyController::class, 'toggleViewing'])->name('properties.toggle-viewing');
         Route::patch('properties/{property}/update-viewing',  [PropertyController::class, 'updateViewing'])->name('properties.update-viewing');
+        Route::get('properties/{property}/consents',           [PropertyController::class, 'consents'])->name('properties.consents');
+        Route::get('properties/{property}/consents/{consent}', [PropertyController::class, 'consentShow'])->name('properties.consent-show');
+        Route::get('properties/{property}/viewings',           [PropertyController::class, 'viewings'])->name('properties.viewings');
+        Route::get('properties/{property}/viewings/{viewing}', [PropertyController::class, 'viewingShow'])->name('properties.viewing-show');
 
         // お知らせ管理
         Route::get('news',               [NewsController::class, 'index'])->name('news.index');

@@ -79,6 +79,16 @@ class Property extends Model
         return number_format($this->price) . '万円';
     }
 
+    public function consents()
+    {
+        return $this->hasMany(PropertyConsent::class);
+    }
+
+    public function viewingReservations()
+    {
+        return $this->hasMany(ViewingReservation::class);
+    }
+
     // 全画像一覧（メイン+追加）
     public function allImages(): array
     {
