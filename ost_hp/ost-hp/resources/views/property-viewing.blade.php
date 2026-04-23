@@ -54,6 +54,57 @@
         .privacy-row input[type=checkbox] { margin-top:2px; flex-shrink:0; width:16px; height:16px; cursor:pointer; }
         .privacy-row label { font-size:.82rem; color:#334155; line-height:1.6; cursor:pointer; }
         .privacy-row a { color:#2f7cff; text-decoration:underline; }
+        .consent-wrap {
+            border: 1px solid #e4e6f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .consent-wrap__title {
+            padding: 12px 16px;
+            background: #f0f2f8;
+            font-size: .82rem;
+            font-weight: 700;
+            color: #334155;
+        }
+        .consent-wrap__scroll {
+            height: 220px;
+            overflow-y: auto;
+            padding: 14px 16px;
+            font-size: .78rem;
+            color: #334155;
+            line-height: 1.75;
+            background: #fff;
+        }
+        .consent-wrap__scroll::-webkit-scrollbar { width: 4px; }
+        .consent-wrap__scroll::-webkit-scrollbar-track { background: #f0f2f8; }
+        .consent-wrap__scroll::-webkit-scrollbar-thumb { background: #c8cce0; border-radius: 2px; }
+        .consent-section-title {
+            font-size: .73rem;
+            font-weight: 700;
+            color: #2f7cff;
+            margin: 12px 0 6px;
+            letter-spacing: .04em;
+        }
+        .consent-section-title:first-child { margin-top: 0; }
+        .consent-item {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .consent-item:last-child { margin-bottom: 0; }
+        .consent-item::before { content: "・"; flex-shrink: 0; color: #7b7b9a; }
+        .consent-item strong { font-weight: 700; }
+        .agree-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 16px;
+            background: #fff7ed;
+            border-top: 1px solid #fed7aa;
+        }
+        .agree-row input[type=checkbox] { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; }
+        .agree-row label { font-size: .82rem; font-weight: 700; color: #334155; line-height: 1.6; cursor: pointer; }
+
         .btn-submit {
             width:100%; padding:14px; border:none; border-radius:10px;
             background:#2f7cff; color:#fff; font-size:.95rem; font-weight:700;
@@ -82,7 +133,7 @@
             @csrf
 
             <div class="field">
-                <label>お名前<span class="req">必須</span></label>
+                <label>案内担当者名<span class="req">必須</span></label>
                 <input type="text" name="name" value="{{ old('name') }}"
                        placeholder="山田 太郎" autocomplete="name">
                 @error('name')<div class="error">{{ $message }}</div>@enderror
@@ -131,6 +182,20 @@
             </div>
 
             <div class="field">
+                <label>同伴者人数<span class="req">必須</span></label>
+                <select name="companions"
+                        style="width:100%;padding:10px 14px;border:1px solid #e4e6f0;border-radius:8px;font-size:.95rem;font-family:inherit;outline:none;background:#fff;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237b7b9a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center;">
+                    <option value="">人数を選択</option>
+                    @for ($i = 0; $i <= 10; $i++)
+                        <option value="{{ $i }}" {{ old('companions') == $i && old('companions') !== null ? 'selected' : '' }}>
+                            {{ $i }}人
+                        </option>
+                    @endfor
+                </select>
+                @error('companions')<div class="error">{{ $message }}</div>@enderror
+            </div>
+
+            <div class="field">
                 <label>名刺<span style="font-size:.72rem;color:#7b7b9a;margin-left:4px;">任意・JPG / PNG / PDF</span></label>
                 <input type="file" name="business_card" id="business-card-input"
                        accept="image/*,application/pdf" style="display:none;"
@@ -145,12 +210,74 @@
                 @error('business_card')<div class="error">{{ $message }}</div>@enderror
             </div>
 
-            <div class="privacy-row">
-                <input type="checkbox" name="privacy" id="privacy" value="1"
-                       {{ old('privacy') ? 'checked' : '' }}>
-                <label for="privacy">
-                    <a href="{{ route('privacy-policy') }}" target="_blank">プライバシーポリシー</a>に同意する
-                </label>
+            <div class="consent-wrap">
+                <div class="consent-wrap__title">物件内見に関する遵守事項承諾書</div>
+                <div class="consent-wrap__scroll">
+                    <p style="margin-bottom:10px;">貴社が管理、または媒介する物件の内見にあたり、下記事項を確認・遵守することを承諾いたします。本承諾の効力は、送信をもって発生し、内見が完了するまで継続するものとします。</p>
+
+                    <div class="consent-section-title">【施設保護・安全管理】</div>
+                    <div class="consent-item"><span><strong>現状有姿の維持：</strong>物件内の設備、建具、備品等に損傷・汚損を与えないよう細心の注意を払い、万が一損傷させた場合は、直ちに貴社へ報告し、その復旧費用を負担します。</span></div>
+                    <div class="consent-item"><span><strong>土足厳禁・衛生管理：</strong>室内では必ずスリッパを着用し、素足での入室は控えます。また、新築物件等の場合は貴社の指示に従い、手袋・養生材を使用します。</span></div>
+                    <div class="consent-item"><span><strong>水回り・火気使用の禁止：</strong>トイレ、洗面、キッチン等の水栓利用、およびバルコニーを含む敷地内での喫煙・火気使用を一切行いません。</span></div>
+                    <div class="consent-item"><span><strong>施錠・消灯の徹底：</strong>退出時は、全ての窓（クレセント錠含む）および玄関扉の施錠、照明の消灯を責任持って確認します。</span></div>
+
+                    <div class="consent-section-title">【プライバシー・情報保持】</div>
+                    <div class="consent-item"><span><strong>撮影およびSNS利用の制限：</strong>室内外の撮影は検討目的に限定し、家主の許可なくSNSやインターネット等へ公開しません。特に居住中物件の場合、所有者の私物や特定につながる情報の撮影は行いません。</span></div>
+                    <div class="consent-item"><span><strong>近隣配慮：</strong>共用部や近隣での大声、迷惑駐車、ポイ捨て等、近隣住民の安寧を妨げる行為をいたしません。</span></div>
+
+                    <div class="consent-section-title">【権利・賠償責任】</div>
+                    <div class="consent-item"><span><strong>損害賠償：</strong>内見中に生じた事故、盗難、汚損等について、私（および同伴者）の過失による場合は、法的責任を負うことを承諾します。</span></div>
+                    <div class="consent-item"><span><strong>直接交渉の禁止：</strong>本内見を通じて知った物件所有者に対し、貴社を介さず直接の契約交渉を行う行為（いわゆる「抜き」行為）を行いません。</span></div>
+                </div>
+                <div class="agree-row">
+                    <input type="checkbox" name="viewing_consent" id="viewing_consent" value="1"
+                           {{ old('viewing_consent') ? 'checked' : '' }}>
+                    <label for="viewing_consent">上記すべての遵守事項を確認し、同意します</label>
+                </div>
+            </div>
+            @error('viewing_consent')<div style="font-size:.75rem;color:#e53e3e;margin-top:-10px;">{{ $message }}</div>@enderror
+
+            <div class="consent-wrap">
+                <div class="consent-wrap__title">プライバシーポリシー</div>
+                <div class="consent-wrap__scroll">
+                    <p style="margin-bottom:10px;">当社は、お客様の個人情報の保護を重要な社会的責務と認識し、関係法令・ガイドラインを遵守するとともに、適切な管理・利用に努めます。</p>
+
+                    <div class="consent-section-title">取得する個人情報</div>
+                    <p style="margin-bottom:6px;">当社は、内見予約申し込みにあたり、以下の個人情報を取得します。</p>
+                    <div class="consent-item"><span>お名前</span></div>
+                    <div class="consent-item"><span>電話番号</span></div>
+                    <div class="consent-item"><span>メールアドレス</span></div>
+                    <div class="consent-item"><span>名刺（ファイルアップロードいただいた場合）</span></div>
+
+                    <div class="consent-section-title">利用目的</div>
+                    <p style="margin-bottom:6px;">取得した個人情報は、以下の目的に限り利用します。</p>
+                    <div class="consent-item"><span>内見予約の受付・管理および担当者からのご連絡</span></div>
+                    <div class="consent-item"><span>物件に関するご案内・サービスのご提供</span></div>
+                    <div class="consent-item"><span>法令に基づく対応</span></div>
+
+                    <div class="consent-section-title">第三者への提供</div>
+                    <p style="margin-bottom:6px;">当社は、以下の場合を除き、取得した個人情報を第三者に提供しません。</p>
+                    <div class="consent-item"><span>お客様ご本人の同意がある場合</span></div>
+                    <div class="consent-item"><span>法令に基づき開示が必要な場合</span></div>
+                    <div class="consent-item"><span>人の生命・身体・財産の保護のために必要な場合</span></div>
+
+                    <div class="consent-section-title">個人情報の管理</div>
+                    <p style="margin-bottom:10px;">当社は、個人情報への不正アクセス・紛失・破損・改ざん・漏洩を防止するため、適切な安全管理措置を講じます。また、個人情報の取り扱いを委託する場合は、委託先に対して適切な監督を行います。</p>
+
+                    <div class="consent-section-title">個人情報の開示・訂正・削除</div>
+                    <p style="margin-bottom:10px;">お客様は、ご自身の個人情報について開示・訂正・追加・削除・利用停止をご請求いただけます。ご請求の際は、担当者までお問い合わせください。なお、ご本人であることを確認させていただいたうえで対応いたします。</p>
+
+                    <div class="consent-section-title">Cookie・アクセス解析</div>
+                    <p style="margin-bottom:10px;">当サイトは、サービス改善を目的としてCookieおよびアクセス解析ツールを使用する場合があります。これらにより個人を特定できる情報を収集することはありません。</p>
+
+                    <div class="consent-section-title">プライバシーポリシーの変更</div>
+                    <p>本ポリシーは、法令の改正やサービス内容の変更に応じて改定する場合があります。改定後のポリシーは本ページに掲載した時点から効力を生じます。</p>
+                </div>
+                <div class="agree-row">
+                    <input type="checkbox" name="privacy" id="privacy" value="1"
+                           {{ old('privacy') ? 'checked' : '' }}>
+                    <label for="privacy">プライバシーポリシーに同意する</label>
+                </div>
             </div>
             @error('privacy')<div style="font-size:.75rem;color:#e53e3e;margin-top:-10px;">{{ $message }}</div>@enderror
 
