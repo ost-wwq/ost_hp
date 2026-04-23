@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>広告掲載許可申請完了 - {{ $property->title }}</title>
+    <title>物件の広告掲載を承諾いたしました - {{ $property->title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -44,10 +44,11 @@
 <body>
 <div class="card">
     <div class="icon">✅</div>
-    <h1 class="title">広告掲載許可申請が完了しました</h1>
+    <h1 class="title">物件の広告掲載を承諾いたしました</h1>
     <p class="text">
-        ご承諾いただきありがとうございます。<br>
-        内容を確認後、担当者よりご連絡いたします。
+        本日より掲載いただいて差し支えございません。<br>
+        早期成約に向けて、積極的なご紹介をいただけますと幸いです。<br>
+        何卒よろしくお願い申し上げます。
     </p>
     <div class="prop-summary">
         <span class="prop-summary__label">物件種類</span>
@@ -56,10 +57,6 @@
         <span class="prop-summary__value">{{ $property->title }}</span>
         <span class="prop-summary__label">価格</span>
         <span class="prop-summary__value prop-summary__value--price">{{ $property->priceFormatted() }}</span>
-    </div>
-    <div class="note">
-        このページは担当者が発行した確認用URLです。<br>
-        表示されている情報は {{ now()->format('Y年m月d日 H:i') }} 時点の最新状態です。
     </div>
 </div>
 </body>

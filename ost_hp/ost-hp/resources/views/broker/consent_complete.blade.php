@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>広告掲載許可申請完了 | ワンステップテックス不動産</title>
+    <title>物件の広告掲載を承諾いたしました | ワンステップテックス不動産</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -88,10 +88,11 @@
 
 <div class="complete-wrap">
     <div class="complete-icon">✅</div>
-    <h1 class="complete-title">広告掲載許可申請が完了しました</h1>
+    <h1 class="complete-title">物件の広告掲載を承諾いたしました</h1>
     <p class="complete-text">
-        以下の物件の広告掲載許可申請を受け付けました。<br>
-        内容を確認後、担当者よりご連絡いたします。
+        本日より掲載いただいて差し支えございません。<br>
+        早期成約に向けて、積極的なご紹介をいただけますと幸いです。<br>
+        何卒よろしくお願い申し上げます。
     </p>
 
     <div class="prop-card">

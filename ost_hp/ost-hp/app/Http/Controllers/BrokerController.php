@@ -99,7 +99,8 @@ class BrokerController extends Controller
             'email'         => ['required', 'email', 'max:200'],
             'business_card' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
             'ad_types'      => ['required', 'array', 'min:1'],
-            'ad_types.*'    => ['string', 'in:own_hp,suumo,homes,athome,store'],
+            'ad_types.*'    => ['string', 'in:own_hp,suumo,homes,athome,store,other'],
+            'ad_other_text' => ['nullable', 'required_if:ad_types.*,other', 'string', 'max:200'],
             'privacy'       => ['accepted'],
         ]);
 
@@ -115,6 +116,7 @@ class BrokerController extends Controller
             'email'         => $validated['email'],
             'business_card' => $cardPath,
             'ad_types'      => $validated['ad_types'],
+            'ad_other_text' => in_array('other', $validated['ad_types']) ? ($validated['ad_other_text'] ?? null) : null,
         ]);
 
         return redirect()->route('broker.consent.complete', $property);

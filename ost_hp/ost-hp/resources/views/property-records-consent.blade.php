@@ -56,7 +56,13 @@
             <dd>
                 <div class="ad-tags">
                     @foreach($consent->ad_types as $ad)
-                        <span class="ad-tag">{{ $adLabels[$ad] ?? $ad }}</span>
+                        <span class="ad-tag">
+                            @if($ad === 'other' && $consent->ad_other_text)
+                                その他（{{ $consent->ad_other_text }}）
+                            @else
+                                {{ $adLabels[$ad] ?? $ad }}
+                            @endif
+                        </span>
                     @endforeach
                 </div>
             </dd>

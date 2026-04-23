@@ -39,9 +39,12 @@
                         <td style="padding:12px 16px;font-size:.85rem;">{{ $consent->email }}</td>
                         <td style="padding:12px 16px;font-size:.82rem;">
                             @php
-                                $adLabels = ['own_hp'=>'自社HP','suumo'=>'SUUMO','homes'=>"HOME'S",'athome'=>'athome','store'=>'店頭'];
+                                $adLabels = ['own_hp'=>'自社HP','suumo'=>'SUUMO','homes'=>"HOME'S",'athome'=>'athome','store'=>'店頭','other'=>'その他'];
                             @endphp
-                            {{ implode('・', array_map(fn($t) => $adLabels[$t] ?? $t, $consent->ad_types ?? [])) }}
+                            {{ implode('・', array_map(function($t) use ($adLabels, $consent) {
+                                if ($t === 'other' && $consent->ad_other_text) return 'その他（'.$consent->ad_other_text.'）';
+                                return $adLabels[$t] ?? $t;
+                            }, $consent->ad_types ?? [])) }}
                         </td>
                         <td style="padding:12px 16px;font-size:.82rem;color:#7b7b9a;">{{ $consent->created_at->format('Y/m/d H:i') }}</td>
                         <td style="padding:12px 16px;">

@@ -31,12 +31,16 @@
                     <dt style="padding:12px 16px;font-size:.78rem;font-weight:700;color:#7b7b9a;background:#fafbfd;">広告宣伝種別</dt>
                     <dd style="padding:12px 16px;font-size:.9rem;">
                         @php
-                            $adLabels = ['own_hp'=>'自社HP','suumo'=>'SUUMO','homes'=>"HOME'S",'athome'=>'athome','store'=>'店頭'];
+                            $adLabels = ['own_hp'=>'自社HP','suumo'=>'SUUMO','homes'=>"HOME'S",'athome'=>'athome','store'=>'店頭','other'=>'その他'];
                         @endphp
                         <div style="display:flex;flex-wrap:wrap;gap:6px;">
                             @foreach($consent->ad_types ?? [] as $type)
                                 <span style="display:inline-block;padding:3px 10px;border-radius:50px;font-size:.78rem;font-weight:600;background:#e4f0ff;color:#2f7cff;">
-                                    {{ $adLabels[$type] ?? $type }}
+                                    @if($type === 'other' && $consent->ad_other_text)
+                                        その他（{{ $consent->ad_other_text }}）
+                                    @else
+                                        {{ $adLabels[$type] ?? $type }}
+                                    @endif
                                 </span>
                             @endforeach
                         </div>

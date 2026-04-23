@@ -201,19 +201,40 @@
                             'homes'  => 'ホームズ',
                             'athome' => 'アットホーム',
                             'store'  => '店舗',
+                            'other'  => 'その他',
                         ];
                         $oldAds = old('ad_types', []);
                     @endphp
                     @foreach($adOptions as $val => $label)
                     <label class="ad-item">
+                        @if($val === 'other')
+                        <input type="checkbox" name="ad_types[]" value="{{ $val }}"
+                               id="ad_other_check"
+                               {{ in_array($val, $oldAds) ? 'checked' : '' }}>
+                        @else
                         <input type="checkbox" name="ad_types[]" value="{{ $val }}"
                                {{ in_array($val, $oldAds) ? 'checked' : '' }}>
+                        @endif
                         <span class="ad-item__box"></span>
                         {{ $label }}
                     </label>
                     @endforeach
                 </div>
+                <div id="ad_other_wrap" style="margin-top:8px;display:{{ in_array('other', $oldAds) ? 'block' : 'none' }};">
+                    <input type="text" name="ad_other_text" id="ad_other_text"
+                        style="width:100%;padding:10px 14px;border:1px solid #e4e6f0;border-radius:8px;font-size:.95rem;font-family:inherit;outline:none;{{ $errors->has('ad_other_text') ? 'border-color:#e53e3e;' : '' }}"
+                        value="{{ old('ad_other_text') }}"
+                        placeholder="その他の広告媒体を入力してください"
+                        maxlength="200">
+                    @error('ad_other_text')<div class="error" style="margin-top:4px;">{{ $message }}</div>@enderror
+                </div>
                 @error('ad_types')<div class="error" style="margin-top:6px;">{{ $message }}</div>@enderror
+                <script>
+                    document.getElementById('ad_other_check').addEventListener('change', function() {
+                        document.getElementById('ad_other_wrap').style.display = this.checked ? 'block' : 'none';
+                        if (!this.checked) document.getElementById('ad_other_text').value = '';
+                    });
+                </script>
             </div>
 
             <div class="privacy-row">
