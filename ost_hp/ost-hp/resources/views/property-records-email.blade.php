@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $property->title }} - 内見予約・掲載承諾の確認</title>
+    <title>{{ $property->title }} - 内見予約・広告掲載許可申請の確認</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -32,7 +32,7 @@
 <div class="card">
     <div class="card__header">
         <a href="{{ route('property.confirm', $token) }}" class="card__back">← 最新状態確認に戻る</a>
-        <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">内見予約・掲載承諾の確認</div>
+        <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">内見予約・広告掲載許可申請の確認</div>
         <div style="font-size:1.1rem;font-weight:700;">{{ $property->title }}</div>
     </div>
     <div class="card__body">

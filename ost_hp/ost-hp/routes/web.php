@@ -58,7 +58,7 @@ Route::get('privacy-policy', fn() => view('privacy-policy'))->name('privacy-poli
 Route::get ('confirm/{token}',        [PropertyConfirmController::class, 'show'])->name('property.confirm');
 Route::post('confirm/{token}/verify', [PropertyConfirmController::class, 'verify'])->name('property.confirm.verify');
 
-// 内見予約・掲載承諾 確認（メール認証）
+// 内見予約・広告掲載許可申請 確認（メール認証）
 Route::get ('confirm/{token}/records',             [PropertyRecordsController::class, 'showEmailForm'])->name('property.records.email');
 Route::post('confirm/{token}/records/send-code',   [PropertyRecordsController::class, 'sendCode'])->name('property.records.send-code');
 Route::get ('confirm/{token}/records/code',        [PropertyRecordsController::class, 'showCodeForm'])->name('property.records.code');
@@ -67,7 +67,7 @@ Route::get ('confirm/{token}/records/list',        [PropertyRecordsController::c
 Route::get ('confirm/{token}/records/viewing/{id}',[PropertyRecordsController::class, 'viewingDetail'])->name('property.records.viewing');
 Route::get ('confirm/{token}/records/consent/{id}',[PropertyRecordsController::class, 'consentDetail'])->name('property.records.consent');
 
-// 掲載承諾ページ（認証不要・confirm_token共用）
+// 広告掲載許可申請ページ（認証不要・confirm_token共用）
 Route::get ('consent/{token}',          [PropertyConsentController::class, 'show'])->name('property.consent');
 Route::post('consent/{token}',          [PropertyConsentController::class, 'store'])->name('property.consent.store');
 Route::get ('consent/{token}/complete', [PropertyConsentController::class, 'complete'])->name('property.consent.complete');

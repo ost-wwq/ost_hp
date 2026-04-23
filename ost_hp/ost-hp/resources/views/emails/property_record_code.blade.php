@@ -15,7 +15,7 @@ body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; bac
 <div class="wrap">
     <p class="title">認証コードのご案内</p>
     <p style="font-size:.9rem;color:#334155;line-height:1.7;">
-        「{{ $propertyTitle }}」の内見予約・掲載承諾の確認をご要求いただきました。<br>
+        「{{ $propertyTitle }}」の内見予約・広告掲載許可申請の確認をご要求いただきました。<br>
         以下の認証コードを入力してください。
     </p>
     <div class="code-box">

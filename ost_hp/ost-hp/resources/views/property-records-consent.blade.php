@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>掲載承諾詳細 - {{ $property->title }}</title>
+    <title>広告掲載許可申請詳細 - {{ $property->title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -41,7 +41,7 @@
 <div class="card">
     <div class="card__header">
         <a href="{{ route('property.records.list', $token) }}" class="card__back">← 申込み一覧に戻る</a>
-        <div style="margin-bottom:6px;"><span class="badge">掲載承諾</span></div>
+        <div style="margin-bottom:6px;"><span class="badge">広告掲載許可申請</span></div>
         <div style="font-size:1.1rem;font-weight:700;">{{ $property->title }}</div>
     </div>
     <div class="card__body">

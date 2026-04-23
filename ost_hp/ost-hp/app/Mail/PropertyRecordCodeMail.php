@@ -19,7 +19,7 @@ class PropertyRecordCodeMail extends Mailable
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: '【認証コード】内見予約・掲載承諾の確認');
+        return new Envelope(subject: '【認証コード】内見予約・広告掲載許可申請の確認');
     }
 
     public function content(): Content

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>掲載承諾完了 - {{ $property->title }}</title>
+    <title>広告掲載許可申請完了 - {{ $property->title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -44,7 +44,7 @@
 <body>
 <div class="card">
     <div class="icon">✅</div>
-    <h1 class="title">掲載承諾が完了しました</h1>
+    <h1 class="title">広告掲載許可申請が完了しました</h1>
     <p class="text">
         ご承諾いただきありがとうございます。<br>
         内容を確認後、担当者よりご連絡いたします。

@@ -1,22 +1,22 @@
 @extends('admin.layouts.app')
 
-@section('title', '物件掲載承諾一覧 - ' . $property->title)
+@section('title', '物件広告掲載許可申請一覧 - ' . $property->title)
 
 @section('content')
 
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
     <a href="{{ route('admin.properties.show', $property) }}" class="btn btn--ghost btn--sm">← 物件詳細に戻る</a>
-    <h1 style="font-size:1.1rem;font-weight:700;margin:0;">物件掲載承諾一覧</h1>
+    <h1 style="font-size:1.1rem;font-weight:700;margin:0;">物件広告掲載許可申請一覧</h1>
     <span style="font-size:.85rem;color:#7b7b9a;">{{ $property->title }}</span>
 </div>
 
 <div class="card">
     <div class="card__header">
-        <div class="card__title">掲載承諾 ({{ $consents->count() }}件)</div>
+        <div class="card__title">広告掲載許可申請 ({{ $consents->count() }}件)</div>
     </div>
     <div class="card__body" style="padding:0;">
         @if($consents->isEmpty())
-            <div style="padding:40px;text-align:center;color:#7b7b9a;font-size:.9rem;">掲載承諾の申し込みはありません</div>
+            <div style="padding:40px;text-align:center;color:#7b7b9a;font-size:.9rem;">広告掲載許可申請の申し込みはありません</div>
         @else
             <table style="width:100%;border-collapse:collapse;">
                 <thead>

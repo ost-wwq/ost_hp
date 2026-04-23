@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
 
-@section('title', '掲載承諾詳細 - ' . $consent->name)
+@section('title', '広告掲載許可申請詳細 - ' . $consent->name)
 
 @section('content')
 
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
-    <a href="{{ route('admin.properties.consents', $property) }}" class="btn btn--ghost btn--sm">← 掲載承諾一覧に戻る</a>
-    <h1 style="font-size:1.1rem;font-weight:700;margin:0;">掲載承諾詳細</h1>
+    <a href="{{ route('admin.properties.consents', $property) }}" class="btn btn--ghost btn--sm">← 広告掲載許可申請一覧に戻る</a>
+    <h1 style="font-size:1.1rem;font-weight:700;margin:0;">広告掲載許可申請詳細</h1>
     <span style="font-size:.85rem;color:#7b7b9a;">{{ $property->title }}</span>
 </div>
 

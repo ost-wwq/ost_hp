@@ -27,7 +27,7 @@
     </div>
     <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
         <a href="{{ route('admin.properties.consents', $property) }}" class="btn btn--ghost btn--sm">
-            物件掲載承諾一覧確認
+            物件広告掲載許可申請一覧確認
             @php $consentCount = $property->consents()->count(); @endphp
             @if($consentCount > 0)
                 <span style="display:inline-block;margin-left:4px;padding:1px 7px;border-radius:50px;font-size:.7rem;font-weight:700;background:#2f7cff;color:#fff;">{{ $consentCount }}</span>

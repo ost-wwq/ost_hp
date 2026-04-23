@@ -81,13 +81,13 @@
             @endforelse
         </div>
 
-        {{-- 掲載承諾 --}}
+        {{-- 広告掲載許可申請 --}}
         <div>
-            <div class="section-title">掲載承諾</div>
+            <div class="section-title">広告掲載許可申請</div>
             @forelse($consents as $c)
             <a href="{{ route('property.records.consent', [$token, $c->id]) }}" class="record-item" style="display:flex;margin-bottom:8px;">
                 <div class="record-item__left">
-                    <div style="margin-bottom:4px;"><span class="badge badge--consent">掲載承諾</span></div>
+                    <div style="margin-bottom:4px;"><span class="badge badge--consent">広告掲載許可申請</span></div>
                     <div class="record-item__name">{{ $c->name }}</div>
                     <div class="record-item__sub">
                         申込日 {{ $c->created_at->format('Y/m/d') }}
@@ -98,7 +98,7 @@
                 </div>
             </a>
             @empty
-            <div class="empty">掲載承諾はありません</div>
+            <div class="empty">広告掲載許可申請はありません</div>
             @endforelse
         </div>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $property->title }} - 掲載承諾</title>
+    <title>{{ $property->title }} - 広告掲載許可申請</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -124,7 +124,7 @@
             <a href="{{ route('property.confirm', $token) }}" class="card__back">
                 ← 最新状態確認に戻る
             </a>
-            <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">掲載承諾</div>
+            <div style="font-size:.72rem;color:#7b7b9a;margin-bottom:4px;">広告掲載許可申請</div>
             <div style="font-size:1.1rem;font-weight:700;">{{ $property->title }}</div>
         </div>
     </div>

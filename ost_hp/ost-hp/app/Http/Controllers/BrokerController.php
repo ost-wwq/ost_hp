@@ -81,14 +81,14 @@ class BrokerController extends Controller
         if (!session('broker_authed')) abort(403);
     }
 
-    // 掲載承諾フォーム表示
+    // 広告掲載許可申請フォーム表示
     public function showConsent(Property $property)
     {
         $this->requireBrokerAuth();
         return view('broker.consent', compact('property'));
     }
 
-    // 掲載承諾フォーム送信
+    // 広告掲載許可申請フォーム送信
     public function storeConsent(Request $request, Property $property)
     {
         $this->requireBrokerAuth();
@@ -120,7 +120,7 @@ class BrokerController extends Controller
         return redirect()->route('broker.consent.complete', $property);
     }
 
-    // 掲載承諾完了画面
+    // 広告掲載許可申請完了画面
     public function consentComplete(Property $property)
     {
         $this->requireBrokerAuth();

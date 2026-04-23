@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>掲載承諾 | ワンステップテックス不動産</title>
+    <title>広告掲載許可申請 | ワンステップテックス不動産</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -302,7 +302,7 @@
 
 <div class="hero-strip">
     <div class="hero-strip__inner">
-        <h1>掲載承諾フォーム</h1>
+        <h1>広告掲載許可申請フォーム</h1>
         <p>物件情報の広告掲載にご同意いただく際にご利用ください</p>
     </div>
 </div>
@@ -431,7 +431,7 @@
             <div class="section__title">プライバシーポリシー</div>
             <div class="privacy-box">
                 <strong>個人情報の取り扱いについて</strong><br><br>
-                ワンステップテックス不動産（以下「当社」）は、掲載承諾フォームにてご提供いただいた個人情報（氏名・電話番号・メールアドレス・名刺等）を、以下の目的のために利用いたします。<br><br>
+                ワンステップテックス不動産（以下「当社」）は、広告掲載許可申請フォームにてご提供いただいた個人情報（氏名・電話番号・メールアドレス・名刺等）を、以下の目的のために利用いたします。<br><br>
                 <strong>利用目的：</strong><br>
                 ・物件の広告掲載に関するご連絡<br>
                 ・掲載内容の確認・調整<br>

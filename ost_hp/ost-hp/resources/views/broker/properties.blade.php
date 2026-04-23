@@ -416,7 +416,7 @@
                         <span class="status-badge status-badge--{{ $st['class'] }}">{{ $st['label'] }}</span>
                     </div>
                     <div>
-                        <a href="{{ route('broker.consent.show', $p) }}" class="btn-consent">📝 掲載承諾</a>
+                        <a href="{{ route('broker.consent.show', $p) }}" class="btn-consent">📝 広告掲載許可申請</a>
                     </div>
                 </div>
                 @endforeach
@@ -446,7 +446,7 @@
                     <span class="status-badge status-badge--{{ $st['class'] }}">{{ $st['label'] }}</span>
                 </div>
                 <div>
-                    <a href="{{ route('broker.consent.show', $p) }}" class="btn-consent">📝 掲載承諾</a>
+                    <a href="{{ route('broker.consent.show', $p) }}" class="btn-consent">📝 広告掲載許可申請</a>
                 </div>
             </div>
             @endforeach
