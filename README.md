@@ -113,8 +113,10 @@ ADMIN_PASSWORD_HASH=$2y$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ADMIN_PASSWORD_HASH="$2y$12$xxxxxxxxxxxxxxxxxxxx..."
 
 ## ③ キャッシュをクリア
+php artisan cache:clear
 php artisan config:clear
-php artisan config:cache
+php artisan route:clear
+php artisan view:clear
 
 ## ④ ログイン
 項目	内容
@@ -124,3 +126,6 @@ URL	/ost_hp_admin/login
 パスワードは データベースに保存されない（環境変数で管理）
 単一パスワード認証（IDなし）
 config('admin.password_hash') と Hash::check() で照合
+
+
+

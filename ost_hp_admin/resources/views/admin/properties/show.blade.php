@@ -66,8 +66,12 @@
             <div class="card__header"><div class="card__title">メイン画像 / PDF</div></div>
             <div class="card__body" style="padding:0;">
                 @if(str_ends_with(strtolower($property->main_image), '.pdf'))
-                    <iframe src="{{ asset('uploads/'.$property->main_image) }}"
-                            style="width:100%;height:600px;border:none;border-radius:0 0 12px 12px;display:block;"></iframe>
+                    <div style="padding:8px 12px;border-bottom:1px solid #e4e6f0;display:flex;justify-content:flex-end;">
+                        <a href="{{ asset('uploads/'.$property->main_image) }}" target="_blank"
+                           style="font-size:.8rem;color:#2f7cff;">↗ 新しいタブで開く</a>
+                    </div>
+                    <embed src="{{ asset('uploads/'.$property->main_image) }}" type="application/pdf"
+                           style="width:100%;height:85vh;min-height:800px;border:none;border-radius:0 0 12px 12px;display:block;">
                 @else
                     <img src="{{ asset('uploads/'.$property->main_image) }}" alt="{{ $property->title }}"
                          style="width:100%;display:block;border-radius:0 0 12px 12px;">
@@ -162,7 +166,7 @@
             <div class="card__body" style="display:flex;flex-direction:column;gap:16px;">
 
                 @if($property->confirm_token)
-                    @php $confirmUrl = route('property.confirm', $property->confirm_token); @endphp
+                    @php $confirmUrl = config('app.public_site_url', 'http://localhost:8013') . '/confirm/' . $property->confirm_token; @endphp
 
                     {{-- 無効にする --}}
                     <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -259,7 +263,7 @@
             <div class="card__body" style="display:flex;flex-direction:column;gap:16px;">
 
                 @if($property->viewing_enabled)
-                    @php $viewingUrl = route('property.viewing', $property->viewing_token); @endphp
+                    @php $viewingUrl = config('app.public_site_url', 'http://localhost:8013') . '/viewing/' . $property->viewing_token; @endphp
 
                     {{-- 有効状態 --}}
                     <div style="display:flex;align-items:center;justify-content:space-between;">

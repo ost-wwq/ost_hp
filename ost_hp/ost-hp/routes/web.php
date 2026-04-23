@@ -5,6 +5,10 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InboundMailController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\BrokerController;
+use App\Http\Controllers\PropertyConfirmController;
+use App\Http\Controllers\PropertyConsentController;
+use App\Http\Controllers\PropertyRecordsController;
+use App\Http\Controllers\PropertyViewingController;
 use App\Models\Property;
 
 // ホームページ
@@ -46,6 +50,32 @@ Route::post('/contact', [ContactController::class, 'send'])->name('contact.send'
 Route::post('/webhook/inbound-mail', [InboundMailController::class, 'handle'])
     ->name('webhook.inbound-mail')
     ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+// プライバシーポリシー
+Route::get('privacy-policy', fn() => view('privacy-policy'))->name('privacy-policy');
+
+// 物件最新状態確認ページ（認証不要・PIN保護）
+Route::get ('confirm/{token}',        [PropertyConfirmController::class, 'show'])->name('property.confirm');
+Route::post('confirm/{token}/verify', [PropertyConfirmController::class, 'verify'])->name('property.confirm.verify');
+
+// 内見予約・掲載承諾 確認（メール認証）
+Route::get ('confirm/{token}/records',             [PropertyRecordsController::class, 'showEmailForm'])->name('property.records.email');
+Route::post('confirm/{token}/records/send-code',   [PropertyRecordsController::class, 'sendCode'])->name('property.records.send-code');
+Route::get ('confirm/{token}/records/code',        [PropertyRecordsController::class, 'showCodeForm'])->name('property.records.code');
+Route::post('confirm/{token}/records/verify-code', [PropertyRecordsController::class, 'verifyCode'])->name('property.records.verify-code');
+Route::get ('confirm/{token}/records/list',        [PropertyRecordsController::class, 'list'])->name('property.records.list');
+Route::get ('confirm/{token}/records/viewing/{id}',[PropertyRecordsController::class, 'viewingDetail'])->name('property.records.viewing');
+Route::get ('confirm/{token}/records/consent/{id}',[PropertyRecordsController::class, 'consentDetail'])->name('property.records.consent');
+
+// 掲載承諾ページ（認証不要・confirm_token共用）
+Route::get ('consent/{token}',          [PropertyConsentController::class, 'show'])->name('property.consent');
+Route::post('consent/{token}',          [PropertyConsentController::class, 'store'])->name('property.consent.store');
+Route::get ('consent/{token}/complete', [PropertyConsentController::class, 'complete'])->name('property.consent.complete');
+
+// 内見予約ページ（認証不要）
+Route::get ('viewing/{token}',          [PropertyViewingController::class, 'show'])->name('property.viewing');
+Route::post('viewing/{token}',          [PropertyViewingController::class, 'store'])->name('property.viewing.store');
+Route::get ('viewing/{token}/complete', [PropertyViewingController::class, 'complete'])->name('property.viewing.complete');
 
 // 業者向け確認ページ
 Route::prefix('broker')->name('broker.')->group(function () {

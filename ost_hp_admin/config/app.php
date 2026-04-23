@@ -54,6 +54,10 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'ost_hp_url' => env('OST_HP_URL', 'http://localhost:8000'),
+
+    'public_site_url' => env('PUBLIC_SITE_URL', env('OST_HP_URL', 'http://localhost:8000')),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

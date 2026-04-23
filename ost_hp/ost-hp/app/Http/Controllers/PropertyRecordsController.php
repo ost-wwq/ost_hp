@@ -11,14 +11,12 @@ use Illuminate\Support\Facades\Mail;
 
 class PropertyRecordsController extends Controller
 {
-    // メール入力フォーム
     public function showEmailForm(string $token)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
         return view('property-records-email', compact('property', 'token'));
     }
 
-    // 認証コード送信
     public function sendCode(string $token, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
@@ -29,8 +27,7 @@ class PropertyRecordsController extends Controller
         ]);
 
         $email = $request->input('email');
-
-        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $code  = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
         $request->session()->put("record_code_{$token}", [
             'code'       => $code,
@@ -44,7 +41,6 @@ class PropertyRecordsController extends Controller
             ->with('email_hint', substr($email, 0, 3) . str_repeat('*', max(0, strpos($email, '@') - 3)) . substr($email, strpos($email, '@')));
     }
 
-    // 認証コード入力フォーム
     public function showCodeForm(string $token, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
@@ -52,7 +48,6 @@ class PropertyRecordsController extends Controller
         return view('property-records-code', compact('property', 'token', 'hint'));
     }
 
-    // コード検証 → 一覧へ
     public function verifyCode(string $token, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
@@ -78,7 +73,6 @@ class PropertyRecordsController extends Controller
         return redirect()->route('property.records.list', $token);
     }
 
-    // 内見予約・掲載承諾 一覧
     public function list(string $token, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
@@ -88,20 +82,15 @@ class PropertyRecordsController extends Controller
             return redirect()->route('property.records.email', $token);
         }
 
-        $viewings  = ViewingReservation::where('property_id', $property->id)
-            ->where('email', $email)
-            ->latest()
-            ->get();
+        $viewings = ViewingReservation::where('property_id', $property->id)
+            ->where('email', $email)->latest()->get();
 
-        $consents  = PropertyConsent::where('property_id', $property->id)
-            ->where('email', $email)
-            ->latest()
-            ->get();
+        $consents = PropertyConsent::where('property_id', $property->id)
+            ->where('email', $email)->latest()->get();
 
         return view('property-records-list', compact('property', 'token', 'viewings', 'consents', 'email'));
     }
 
-    // 内見予約 詳細
     public function viewingDetail(string $token, int $id, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
@@ -119,7 +108,6 @@ class PropertyRecordsController extends Controller
         return view('property-records-viewing', compact('property', 'token', 'viewing'));
     }
 
-    // 掲載承諾 詳細
     public function consentDetail(string $token, int $id, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();

@@ -6,39 +6,10 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\PropertyConfirmController;
-use App\Http\Controllers\PropertyConsentController;
-use App\Http\Controllers\PropertyRecordsController;
 use App\Http\Middleware\AdminAuth;
 
 // ルートアクセス → 管理画面ログインへリダイレクト
 Route::get('/', fn() => redirect()->route('admin.login'));
-
-// 物件最新状態確認ページ（認証不要・PIN保護）
-Route::get ('confirm/{token}',        [PropertyConfirmController::class, 'show'])->name('property.confirm');
-Route::post('confirm/{token}/verify', [PropertyConfirmController::class, 'verify'])->name('property.confirm.verify');
-
-// 内見予約・掲載承諾 確認（メール認証）
-Route::get ('confirm/{token}/records',             [PropertyRecordsController::class, 'showEmailForm'])->name('property.records.email');
-Route::post('confirm/{token}/records/send-code',   [PropertyRecordsController::class, 'sendCode'])->name('property.records.send-code');
-Route::get ('confirm/{token}/records/code',        [PropertyRecordsController::class, 'showCodeForm'])->name('property.records.code');
-Route::post('confirm/{token}/records/verify-code', [PropertyRecordsController::class, 'verifyCode'])->name('property.records.verify-code');
-Route::get ('confirm/{token}/records/list',        [PropertyRecordsController::class, 'list'])->name('property.records.list');
-Route::get ('confirm/{token}/records/viewing/{id}',[PropertyRecordsController::class, 'viewingDetail'])->name('property.records.viewing');
-Route::get ('confirm/{token}/records/consent/{id}',[PropertyRecordsController::class, 'consentDetail'])->name('property.records.consent');
-
-// 掲載承諾ページ（認証不要・confirm_token共用）
-Route::get ('consent/{token}',          [PropertyConsentController::class, 'show'])->name('property.consent');
-Route::post('consent/{token}',          [PropertyConsentController::class, 'store'])->name('property.consent.store');
-Route::get ('consent/{token}/complete', [PropertyConsentController::class, 'complete'])->name('property.consent.complete');
-
-// プライバシーポリシー
-Route::get('privacy-policy', fn() => view('privacy-policy'))->name('privacy-policy');
-
-// 内見予約ページ（認証不要）
-Route::get ('viewing/{token}',          [\App\Http\Controllers\PropertyViewingController::class, 'show'])->name('property.viewing');
-Route::post('viewing/{token}',          [\App\Http\Controllers\PropertyViewingController::class, 'store'])->name('property.viewing.store');
-Route::get ('viewing/{token}/complete', [\App\Http\Controllers\PropertyViewingController::class, 'complete'])->name('property.viewing.complete');
 
 // ログイン
 Route::prefix('ost_hp_admin')->name('admin.')->group(function () {

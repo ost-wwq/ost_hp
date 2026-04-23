@@ -38,15 +38,15 @@ class PropertyViewingController extends Controller
             'reserved_time' => ['required', 'in:' . implode(',', $validTimes)],
             'privacy'       => ['accepted'],
         ], [
-            'name.required'          => 'お名前を入力してください。',
-            'phone.required'         => '電話番号を入力してください。',
-            'email.required'         => 'メールアドレスを入力してください。',
-            'email.email'            => '正しいメールアドレスを入力してください。',
-            'reserved_date.required' => '予約日を入力してください。',
+            'name.required'                => 'お名前を入力してください。',
+            'phone.required'               => '電話番号を入力してください。',
+            'email.required'               => 'メールアドレスを入力してください。',
+            'email.email'                  => '正しいメールアドレスを入力してください。',
+            'reserved_date.required'       => '予約日を入力してください。',
             'reserved_date.after_or_equal' => '予約日は本日以降の日付を入力してください。',
-            'reserved_time.required' => '予約時間を選択してください。',
-            'reserved_time.in'       => '正しい予約時間を選択してください。',
-            'privacy.accepted'       => 'プライバシーポリシーに同意してください。',
+            'reserved_time.required'       => '予約時間を選択してください。',
+            'reserved_time.in'             => '正しい予約時間を選択してください。',
+            'privacy.accepted'             => 'プライバシーポリシーに同意してください。',
         ]);
 
         $businessCardPath = null;

@@ -13,11 +13,12 @@ class Property extends Model
     ];
 
     protected $casts = [
-        'images'    => 'array',
-        'published' => 'boolean',
-        'price'     => 'integer',
-        'area'      => 'decimal:2',
-        'age'       => 'integer',
+        'images'          => 'array',
+        'published'       => 'boolean',
+        'viewing_enabled' => 'boolean',
+        'price'           => 'integer',
+        'area'            => 'decimal:2',
+        'age'             => 'integer',
     ];
 
     // 公開中の物件のみ
@@ -74,6 +75,16 @@ class Property extends Model
                 : number_format($oku) . '億円';
         }
         return number_format($this->price) . '万円';
+    }
+
+    public function consents()
+    {
+        return $this->hasMany(PropertyConsent::class);
+    }
+
+    public function viewingReservations()
+    {
+        return $this->hasMany(ViewingReservation::class);
     }
 
     // 全画像一覧（メイン+追加）

@@ -327,13 +327,13 @@
         </div>
         <div class="sidebar__nav-label">サイト</div>
         <div class="sidebar__nav-item">
-            <a href="{{ env('PUBLIC_SITE_URL', 'http://localhost:8013') }}" target="_blank">
+            <a href="{{ config('app.public_site_url', 'http://localhost:8013') }}" target="_blank">
                 <span>🌐</span>
                 <span>サイトを開く</span>
             </a>
         </div>
         <div class="sidebar__nav-item">
-            <a href="{{ env('PUBLIC_SITE_URL', 'http://localhost:8013') }}/broker" target="_blank">
+            <a href="{{ config('app.public_site_url', 'http://localhost:8013') }}/broker" target="_blank">
                 <span>🔑</span>
                 <span>業者確認ページ</span>
             </a>
