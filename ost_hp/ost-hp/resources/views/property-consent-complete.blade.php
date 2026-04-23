@@ -39,6 +39,22 @@
         .prop-summary__value { font-weight:600; color:#2b2d42; }
         .prop-summary__value--price { color:#2f7cff; font-size:1.05rem; font-weight:700; }
         .note { padding:12px 16px; background:#f8f9ff; border-radius:8px; font-size:.78rem; color:#7b7b9a; line-height:1.7; text-align:left; }
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #1a4cbd 0%, #2f7cff 100%);
+            color: #fff;
+            border-radius: 50px;
+            padding: 13px 36px;
+            font-size: .95rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(47,124,255,.35);
+            transition: opacity .2s;
+            margin-top: 24px;
+        }
+        .btn-back:hover { opacity: .9; }
     </style>
 </head>
 <body>
@@ -46,9 +62,8 @@
     <div class="icon">✅</div>
     <h1 class="title">物件の広告掲載を承諾いたしました</h1>
     <p class="text">
-        本日より掲載いただいて差し支えございません。<br>
-        早期成約に向けて、積極的なご紹介をいただけますと幸いです。<br>
-        何卒よろしくお願い申し上げます。
+        ご申請ありがとうございます。これより掲載いただけます。<br>
+        早期の成約に向けて、積極的なご紹介を何卒よろしくお願い申し上げます。
     </p>
     <div class="prop-summary">
         <span class="prop-summary__label">物件種類</span>
@@ -58,6 +73,9 @@
         <span class="prop-summary__label">価格</span>
         <span class="prop-summary__value prop-summary__value--price">{{ $property->priceFormatted() }}</span>
     </div>
+    <a href="{{ route('property.confirm', $property->confirm_token) }}" class="btn-back">
+        ← 最新状態確認画面に戻る
+    </a>
 </div>
 </body>
 </html>

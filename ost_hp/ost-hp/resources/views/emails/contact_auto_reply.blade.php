@@ -68,7 +68,7 @@
     </div>
     <div class="footer">
         ワンステップテックス不動産<br>
-        &copy; {{ date('Y') }} One Step Techs Real Estate. All rights reserved.
+        &copy; {{ date('Y') }} house.onesteptechs.com. All rights reserved.
     </div>
 </div>
 </body>

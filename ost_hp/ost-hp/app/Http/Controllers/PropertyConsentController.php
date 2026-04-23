@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PropertyConsentMail;
 use App\Models\Property;
 use App\Models\PropertyConsent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PropertyConsentController extends Controller
 {
@@ -27,6 +29,7 @@ class PropertyConsentController extends Controller
             'ad_types'      => ['required', 'array', 'min:1'],
             'ad_types.*'    => ['string', 'in:own_hp,suumo,homes,athome,store,other'],
             'ad_other_text' => ['nullable', 'required_if:ad_types.*,other', 'string', 'max:200'],
+            'ad_consent'    => ['accepted'],
             'privacy'       => ['accepted'],
         ], [
             'name.required'     => 'お名前を入力してください。',
@@ -36,6 +39,7 @@ class PropertyConsentController extends Controller
             'ad_types.required'      => '広告宣伝の種類を1つ以上選択してください。',
             'ad_types.min'           => '広告宣伝の種類を1つ以上選択してください。',
             'ad_other_text.required_if' => '「その他」を選択した場合は内容を入力してください。',
+            'ad_consent.accepted'    => '注意事項を確認し、同意してください。',
             'privacy.accepted'       => 'プライバシーポリシーに同意してください。',
         ]);
 
@@ -45,7 +49,7 @@ class PropertyConsentController extends Controller
                 ->store('business_cards', 'public_uploads');
         }
 
-        PropertyConsent::create([
+        $consent = PropertyConsent::create([
             'property_id'   => $property->id,
             'name'          => $request->name,
             'phone'         => $request->phone,
@@ -54,6 +58,8 @@ class PropertyConsentController extends Controller
             'ad_types'      => $request->ad_types,
             'ad_other_text' => in_array('other', $request->ad_types ?? []) ? $request->ad_other_text : null,
         ]);
+
+        Mail::to($consent->email)->send(new PropertyConsentMail($consent));
 
         return redirect()->route('property.consent.complete', $token);
     }

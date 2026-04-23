@@ -239,28 +239,28 @@
         .checkbox-item input:checked + .checkbox-item__box { background: var(--blue); border-color: var(--blue); }
         .checkbox-item:has(input:checked) { border-color: var(--blue); background: #f0f5ff; }
 
-        /* Privacy policy */
-        .privacy-box {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px 16px;
-            font-size: .82rem;
-            color: var(--text);
-            line-height: 1.7;
-            max-height: 160px;
-            overflow-y: auto;
-            background: #fafafa;
-            margin-bottom: 14px;
+        /* 注意事項 */
+        .consent-wrap { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+        .consent-wrap__title { padding: 12px 16px; background: #f0f2f8; font-size: .82rem; font-weight: 700; color: #334155; }
+        .consent-wrap__scroll {
+            height: 220px; overflow-y: auto; padding: 14px 16px;
+            font-size: .78rem; color: #334155; line-height: 1.75; background: #fff;
         }
-        .privacy-agree {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: .9rem;
-            font-weight: 500;
+        .consent-wrap__scroll::-webkit-scrollbar { width: 4px; }
+        .consent-wrap__scroll::-webkit-scrollbar-track { background: #f0f2f8; }
+        .consent-wrap__scroll::-webkit-scrollbar-thumb { background: #c8cce0; border-radius: 2px; }
+        .consent-section-title { font-size: .73rem; font-weight: 700; color: var(--blue); margin: 12px 0 6px; letter-spacing: .04em; }
+        .consent-section-title:first-child { margin-top: 0; }
+        .consent-item { display: flex; gap: 6px; margin-bottom: 8px; }
+        .consent-item:last-child { margin-bottom: 0; }
+        .consent-item strong { font-weight: 700; }
+        .agree-row {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 12px 16px; background: #fff7ed; border-top: 1px solid #fed7aa;
         }
-        .privacy-agree input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--blue); cursor: pointer; }
+        .agree-row input[type=checkbox] { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; accent-color: var(--blue); }
+        .agree-row label { font-size: .82rem; font-weight: 700; color: #334155; line-height: 1.6; cursor: pointer; }
+
 
         /* Submit */
         .submit-wrap { text-align: center; margin-top: 10px; }
@@ -346,7 +346,7 @@
             <div class="section__title">申請者情報</div>
 
             <div class="field">
-                <label class="field__label" for="name">お名前<span class="required">必須</span></label>
+                <label class="field__label" for="name">担当者名<span class="required">必須</span></label>
                 <input
                     id="name"
                     type="text"
@@ -447,22 +447,70 @@
             </script>
         </div>
 
+        {{-- 注意事項 --}}
+        <div class="section">
+            <div class="section__title">注意事項</div>
+            <div class="consent-wrap">
+                <div class="consent-wrap__title">広告掲載に関する注意事項</div>
+                <div class="consent-wrap__scroll">
+                    <div class="consent-section-title">1. 弊社都合による掲載停止について（重要項目）</div>
+                    <div class="consent-item"><span><strong>掲載の中止・変更：</strong>弊社の判断（専任媒介契約への切り替え、オーナー意向の変更、成約、または管理上の理由等）により、事前の通知なく広告掲載の停止または掲載内容の変更を要請、あるいはシステム上で公開を停止する場合があります。</span></div>
+                    <div class="consent-item"><span><strong>即時取り下げの義務：</strong>弊社より掲載停止の通知（システム通知またはメール）があった際は、速やかにポータルサイトおよび自社サイトからの取り下げ作業を行ってください。</span></div>
+                    <div class="consent-item"><span><strong>免責事項：</strong>掲載停止に伴い仲介会社様に生じた損害（広告費、入力作業代、反響喪失等）について、弊社は一切の責任を負いかねます。</span></div>
+
+                    <div class="consent-section-title">2. その他の基本ルール</div>
+                    <div class="consent-item"><span><strong>おとり広告の禁止：</strong>成約済み物件の掲載継続は固く禁じます。弊社から成約通知があった場合、またはシステム上のステータスが「成約」となった場合は、直ちに掲載を終了してください。</span></div>
+                    <div class="consent-item"><span><strong>表記の正確性：</strong>広告内容は弊社提供の資料に基づき、正確に表記してください。現状と図面・情報が異なる場合は「現況優先」となります。</span></div>
+                    <div class="consent-item"><span><strong>直接交渉の禁止：</strong>本物件の掲載を通じて、オーナー様（貸主・売主）への直接の交渉や営業活動を行うことを禁じます。</span></div>
+                </div>
+                <div class="agree-row">
+                    <input type="checkbox" name="ad_consent" id="ad_consent" value="1"
+                           {{ old('ad_consent') ? 'checked' : '' }}>
+                    <label for="ad_consent">上記の注意事項をすべて確認し、同意します</label>
+                </div>
+            </div>
+            @error('ad_consent')<p class="field__error" style="margin-top:8px;">{{ $message }}</p>@enderror
+        </div>
+
         {{-- プライバシーポリシー --}}
         <div class="section">
             <div class="section__title">プライバシーポリシー</div>
-            <div class="privacy-box">
-                <strong>個人情報の取り扱いについて</strong><br><br>
-                ワンステップテックス不動産（以下「当社」）は、広告掲載許可申請フォームにてご提供いただいた個人情報（氏名・電話番号・メールアドレス・名刺等）を、以下の目的のために利用いたします。<br><br>
-                <strong>利用目的：</strong><br>
-                ・物件の広告掲載に関するご連絡<br>
-                ・掲載内容の確認・調整<br>
-                ・当社サービスのご案内<br><br>
-                収集した個人情報は、法令に基づく場合を除き、ご本人の同意なく第三者に提供することはありません。個人情報の開示・訂正・削除等のお問い合わせは、当社窓口までご連絡ください。
+            <div class="consent-wrap">
+                <div class="consent-wrap__title">プライバシーポリシー</div>
+                <div class="consent-wrap__scroll">
+                    <p style="margin-bottom:10px;">当社は、お客様の個人情報の保護を重要な社会的責務と認識し、関係法令・ガイドラインを遵守するとともに、適切な管理・利用に努めます。</p>
+
+                    <div class="consent-section-title">取得する個人情報</div>
+                    <p style="margin-bottom:6px;">当社は、広告掲載許可申請にあたり、以下の個人情報を取得します。</p>
+                    <div class="consent-item"><span>担当者名</span></div>
+                    <div class="consent-item"><span>電話番号</span></div>
+                    <div class="consent-item"><span>メールアドレス</span></div>
+                    <div class="consent-item"><span>名刺（ファイルアップロードいただいた場合）</span></div>
+
+                    <div class="consent-section-title">利用目的</div>
+                    <p style="margin-bottom:6px;">取得した個人情報は、以下の目的に限り利用します。</p>
+                    <div class="consent-item"><span>物件の広告掲載に関するご連絡・管理</span></div>
+                    <div class="consent-item"><span>掲載内容の確認・調整</span></div>
+                    <div class="consent-item"><span>法令に基づく対応</span></div>
+
+                    <div class="consent-section-title">第三者への提供</div>
+                    <p style="margin-bottom:6px;">当社は、以下の場合を除き、取得した個人情報を第三者に提供しません。</p>
+                    <div class="consent-item"><span>お客様ご本人の同意がある場合</span></div>
+                    <div class="consent-item"><span>法令に基づき開示が必要な場合</span></div>
+                    <div class="consent-item"><span>人の生命・身体・財産の保護のために必要な場合</span></div>
+
+                    <div class="consent-section-title">個人情報の管理</div>
+                    <p style="margin-bottom:10px;">当社は、個人情報への不正アクセス・紛失・破損・改ざん・漏洩を防止するため、適切な安全管理措置を講じます。</p>
+
+                    <div class="consent-section-title">個人情報の開示・訂正・削除</div>
+                    <p>お客様は、ご自身の個人情報について開示・訂正・追加・削除・利用停止をご請求いただけます。ご請求の際は、担当者までお問い合わせください。</p>
+                </div>
+                <div class="agree-row">
+                    <input type="checkbox" name="privacy" id="privacy" value="1"
+                           {{ old('privacy') ? 'checked' : '' }}>
+                    <label for="privacy">プライバシーポリシーに同意する</label>
+                </div>
             </div>
-            <label class="privacy-agree">
-                <input type="checkbox" name="privacy" value="1" {{ old('privacy') ? 'checked' : '' }}>
-                プライバシーポリシーに同意します
-            </label>
             @error('privacy')<p class="field__error" style="margin-top:8px;">{{ $message }}</p>@enderror
         </div>
 

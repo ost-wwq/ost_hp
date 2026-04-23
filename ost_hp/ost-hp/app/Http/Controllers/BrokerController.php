@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PropertyConsentMail;
 use App\Models\Property;
 use App\Models\PropertyConsent;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BrokerController extends Controller
 {
@@ -101,6 +103,7 @@ class BrokerController extends Controller
             'ad_types'      => ['required', 'array', 'min:1'],
             'ad_types.*'    => ['string', 'in:own_hp,suumo,homes,athome,store,other'],
             'ad_other_text' => ['nullable', 'required_if:ad_types.*,other', 'string', 'max:200'],
+            'ad_consent'    => ['accepted'],
             'privacy'       => ['accepted'],
         ]);
 
@@ -109,7 +112,7 @@ class BrokerController extends Controller
             $cardPath = $request->file('business_card')->store('business_cards', 'public');
         }
 
-        PropertyConsent::create([
+        $consent = PropertyConsent::create([
             'property_id'   => $property->id,
             'name'          => $validated['name'],
             'phone'         => $validated['phone'],
@@ -118,6 +121,8 @@ class BrokerController extends Controller
             'ad_types'      => $validated['ad_types'],
             'ad_other_text' => in_array('other', $validated['ad_types']) ? ($validated['ad_other_text'] ?? null) : null,
         ]);
+
+        Mail::to($consent->email)->send(new PropertyConsentMail($consent));
 
         return redirect()->route('broker.consent.complete', $property);
     }
