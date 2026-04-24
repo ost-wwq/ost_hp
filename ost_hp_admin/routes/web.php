@@ -71,6 +71,10 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 
+        // パスワード変更
+        Route::get('password', [AuthController::class, 'showChangePassword'])->name('password.edit');
+        Route::put('password', [AuthController::class, 'changePassword'])->name('password.update');
+
         // お問い合わせ管理
         Route::get('contacts',                      [ContactController::class, 'index'])->name('contacts.index');
         Route::get('contacts/{contact}',            [ContactController::class, 'show'])->name('contacts.show');

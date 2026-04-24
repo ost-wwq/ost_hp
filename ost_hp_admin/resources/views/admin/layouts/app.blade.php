@@ -360,6 +360,13 @@
                 <span>サイト設定</span>
             </a>
         </div>
+        <div class="sidebar__nav-item">
+            <a href="{{ route('admin.password.edit') }}"
+               class="{{ request()->routeIs('admin.password.*') ? 'active' : '' }}">
+                <span>🔐</span>
+                <span>パスワード変更</span>
+            </a>
+        </div>
     </nav>
     <div class="sidebar__footer">
         <div class="sidebar__nav-item">
