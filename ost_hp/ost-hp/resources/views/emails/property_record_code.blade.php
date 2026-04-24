@@ -25,6 +25,17 @@ body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; bac
         ・このコードは10分間有効です。<br>
         ・お心当たりのない場合は、このメールを無視してください。
     </p>
+
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid #e4e6f0;font-size:.82rem;color:#4a4a6a;line-height:2;">
+        ────────────────────────────────────<br>
+        株式会社ワンステップテックス<br>
+        埼玉知事(1)第25759号<br>
+        TEL：090-8506-0043<br>
+        FAX：048-458-0527<br>
+        E-mail：<a href="mailto:info@house.onesteptechs.com" style="color:#1a4cbd;">info@house.onesteptechs.com</a><br>
+        WebPage：<a href="https://www.house.onesteptechs.com" style="color:#1a4cbd;">https://www.house.onesteptechs.com</a><br>
+        ────────────────────────────────────
+    </div>
 </div>
 </body>
 </html>

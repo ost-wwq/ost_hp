@@ -31,6 +31,7 @@
         <p class="message">
             新しい内見予約が入りました。
         </p>
+        <p class="note">※ 本メールはシステムより自動送信されています。</p>
 
         <div class="section">
             <div class="section-title">■ 物件情報</div>
@@ -88,7 +89,17 @@
             </table>
         </div>
 
-        <p class="note">※ 本メールはシステムより自動送信されています。</p>
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e4e6f0;font-size:.82rem;color:#4a4a6a;line-height:2;">
+            ────────────────────────────────────<br>
+            株式会社ワンステップテックス<br>
+            埼玉知事(1)第25759号<br>
+            TEL：090-8506-0043<br>
+            FAX：048-458-0527<br>
+            E-mail：<a href="mailto:info@house.onesteptechs.com" style="color:#1a4cbd;">info@house.onesteptechs.com</a><br>
+            WebPage：<a href="https://www.house.onesteptechs.com" style="color:#1a4cbd;">https://www.house.onesteptechs.com</a><br>
+            ────────────────────────────────────
+        </div>
+
     </div>
     <div class="footer">
         ワンステップテックス不動産<br>
