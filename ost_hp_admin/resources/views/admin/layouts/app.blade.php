@@ -345,6 +345,13 @@
                 <span>業者確認ページ</span>
             </a>
         </div>
+        <div class="sidebar__nav-item">
+            <a href="{{ route('admin.reports.index') }}"
+               class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                <span>📊</span>
+                <span>報告</span>
+            </a>
+        </div>
         <div class="sidebar__nav-label">設定</div>
         <div class="sidebar__nav-item">
             <a href="{{ route('admin.settings.index') }}"

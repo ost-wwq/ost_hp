@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OwnerController;
 use App\Http\Controllers\Admin\PropertyController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Middleware\AdminAuth;
 
@@ -59,6 +60,12 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::get('news/{news}/edit',   [NewsController::class, 'edit'])->name('news.edit');
         Route::put('news/{news}',        [NewsController::class, 'update'])->name('news.update');
         Route::delete('news/{news}',     [NewsController::class, 'destroy'])->name('news.destroy');
+
+        // 報告
+        Route::get('reports',         [ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/create',  [ReportController::class, 'create'])->name('reports.create');
+        Route::post('reports',        [ReportController::class, 'store'])->name('reports.store');
+        Route::get('reports/{report}',[ReportController::class, 'show'])->name('reports.show');
 
         // 設定
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');

@@ -159,7 +159,13 @@
         <div class="card">
             <div class="card__header">
                 <div class="card__title">オーナー情報</div>
-                <a href="{{ route('admin.properties.owner', $property) }}" class="btn btn--ghost btn--sm">設定</a>
+                <div style="display:flex;gap:8px;">
+                    @if($property->owner)
+                    <a href="{{ route('admin.reports.create', ['sent_to' => $property->owner->email, 'property_id' => $property->id]) }}"
+                       class="btn btn--primary btn--sm">報告</a>
+                    @endif
+                    <a href="{{ route('admin.properties.owner', $property) }}" class="btn btn--ghost btn--sm">設定</a>
+                </div>
             </div>
             <div class="card__body" style="padding:0;">
                 @if($property->owner)
