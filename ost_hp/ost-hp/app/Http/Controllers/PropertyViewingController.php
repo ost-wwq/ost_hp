@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ViewingReservationAdminMail;
+use App\Mail\ViewingReservationMail;
 use App\Models\Property;
 use App\Models\ViewingReservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PropertyViewingController extends Controller
 {
-    public function show(string $token)
+    public function show(string $token, Request $request)
     {
         $property = Property::where('viewing_token', $token)
             ->where('viewing_enabled', true)
             ->firstOrFail();
+
+        if (! $request->session()->get("pin_verified_{$property->confirm_token}")) {
+            return redirect()->route('property.confirm', $property->confirm_token);
+        }
 
         return view('property-viewing', compact('property'));
     }
@@ -22,6 +29,10 @@ class PropertyViewingController extends Controller
         $property = Property::where('viewing_token', $token)
             ->where('viewing_enabled', true)
             ->firstOrFail();
+
+        if (! $request->session()->get("pin_verified_{$property->confirm_token}")) {
+            return redirect()->route('property.confirm', $property->confirm_token);
+        }
 
         $validTimes = [];
         for ($h = 9; $h <= 19; $h++) {
@@ -60,7 +71,7 @@ class PropertyViewingController extends Controller
                 ->store('business_cards', 'public_uploads');
         }
 
-        ViewingReservation::create([
+        $reservation = ViewingReservation::create([
             'property_id'   => $property->id,
             'name'          => $request->name,
             'phone'         => $request->phone,
@@ -71,14 +82,21 @@ class PropertyViewingController extends Controller
             'reserved_time' => $request->reserved_time,
         ]);
 
+        Mail::to($reservation->email)->send(new ViewingReservationMail($reservation));
+        Mail::to(config('mail.contact_to'))->send(new ViewingReservationAdminMail($reservation));
+
         return redirect()->route('property.viewing.complete', $token);
     }
 
-    public function complete(string $token)
+    public function complete(string $token, Request $request)
     {
         $property = Property::where('viewing_token', $token)
             ->where('viewing_enabled', true)
             ->firstOrFail();
+
+        if (! $request->session()->get("pin_verified_{$property->confirm_token}")) {
+            return redirect()->route('property.confirm', $property->confirm_token);
+        }
 
         return view('property-viewing-complete', compact('property'));
     }

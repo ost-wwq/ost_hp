@@ -72,7 +72,7 @@ Route::get ('consent/{token}',          [PropertyConsentController::class, 'show
 Route::post('consent/{token}',          [PropertyConsentController::class, 'store'])->name('property.consent.store');
 Route::get ('consent/{token}/complete', [PropertyConsentController::class, 'complete'])->name('property.consent.complete');
 
-// 内見予約ページ（認証不要）
+// 内見予約ページ（confirm PINセッション必須）
 Route::get ('viewing/{token}',          [PropertyViewingController::class, 'show'])->name('property.viewing');
 Route::post('viewing/{token}',          [PropertyViewingController::class, 'store'])->name('property.viewing.store');
 Route::get ('viewing/{token}/complete', [PropertyViewingController::class, 'complete'])->name('property.viewing.complete');

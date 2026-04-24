@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Mail;
 
 class PropertyConsentController extends Controller
 {
-    public function show(string $token)
+    public function show(string $token, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
+
+        if (! $request->session()->get("pin_verified_{$token}")) {
+            return redirect()->route('property.confirm', $token);
+        }
 
         return view('property-consent', compact('property', 'token'));
     }
@@ -20,6 +24,10 @@ class PropertyConsentController extends Controller
     public function store(string $token, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
+
+        if (! $request->session()->get("pin_verified_{$token}")) {
+            return redirect()->route('property.confirm', $token);
+        }
 
         $request->validate([
             'name'          => ['required', 'string', 'max:100'],
@@ -64,9 +72,13 @@ class PropertyConsentController extends Controller
         return redirect()->route('property.consent.complete', $token);
     }
 
-    public function complete(string $token)
+    public function complete(string $token, Request $request)
     {
         $property = Property::where('confirm_token', $token)->firstOrFail();
+
+        if (! $request->session()->get("pin_verified_{$token}")) {
+            return redirect()->route('property.confirm', $token);
+        }
 
         return view('property-consent-complete', compact('property'));
     }

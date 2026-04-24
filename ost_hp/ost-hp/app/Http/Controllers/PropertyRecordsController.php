@@ -11,14 +11,26 @@ use Illuminate\Support\Facades\Mail;
 
 class PropertyRecordsController extends Controller
 {
-    public function showEmailForm(string $token)
+    private function requirePin(string $token, Request $request): ?\Illuminate\Http\RedirectResponse
     {
+        if (! $request->session()->get("pin_verified_{$token}")) {
+            return redirect()->route('property.confirm', $token);
+        }
+        return null;
+    }
+
+    public function showEmailForm(string $token, Request $request)
+    {
+        if ($redirect = $this->requirePin($token, $request)) return $redirect;
+
         $property = Property::where('confirm_token', $token)->firstOrFail();
         return view('property-records-email', compact('property', 'token'));
     }
 
     public function sendCode(string $token, Request $request)
     {
+        if ($redirect = $this->requirePin($token, $request)) return $redirect;
+
         $property = Property::where('confirm_token', $token)->firstOrFail();
 
         $request->validate(['email' => ['required', 'email']], [
@@ -43,6 +55,8 @@ class PropertyRecordsController extends Controller
 
     public function showCodeForm(string $token, Request $request)
     {
+        if ($redirect = $this->requirePin($token, $request)) return $redirect;
+
         $property = Property::where('confirm_token', $token)->firstOrFail();
         $hint = session('email_hint', '');
         return view('property-records-code', compact('property', 'token', 'hint'));
@@ -50,6 +64,8 @@ class PropertyRecordsController extends Controller
 
     public function verifyCode(string $token, Request $request)
     {
+        if ($redirect = $this->requirePin($token, $request)) return $redirect;
+
         $property = Property::where('confirm_token', $token)->firstOrFail();
 
         $request->validate(['code' => ['required', 'digits:6']], [
