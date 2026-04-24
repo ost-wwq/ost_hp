@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Owner;
 use App\Models\Property;
 use App\Models\PropertyConsent;
 use App\Models\ViewingReservation;
@@ -208,6 +209,23 @@ class PropertyController extends Controller
     {
         abort_if($viewing->property_id !== $property->id, 404);
         return view('admin.properties.viewing-show', compact('property', 'viewing'));
+    }
+
+    public function ownerEdit(Property $property)
+    {
+        $owners = Owner::orderBy('kana')->orderBy('name')->get();
+        return view('admin.properties.owner', compact('property', 'owners'));
+    }
+
+    public function ownerUpdate(Property $property, Request $request)
+    {
+        $request->validate([
+            'owner_id' => ['nullable', 'exists:owners,id'],
+        ]);
+
+        $property->update(['owner_id' => $request->owner_id ?: null]);
+
+        return back()->with('success', 'オーナーを設定しました。');
     }
 
     // ---- private helpers ----

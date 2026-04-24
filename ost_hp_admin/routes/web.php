@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\OwnerController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Middleware\AdminAuth;
@@ -34,10 +35,21 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::patch('properties/{property}/toggle-confirm',  [PropertyController::class, 'toggleConfirm'])->name('properties.toggle-confirm');
         Route::patch('properties/{property}/toggle-viewing',  [PropertyController::class, 'toggleViewing'])->name('properties.toggle-viewing');
         Route::patch('properties/{property}/update-viewing',  [PropertyController::class, 'updateViewing'])->name('properties.update-viewing');
+        Route::get('properties/{property}/owner',              [PropertyController::class, 'ownerEdit'])->name('properties.owner');
+        Route::put('properties/{property}/owner',              [PropertyController::class, 'ownerUpdate'])->name('properties.owner.update');
         Route::get('properties/{property}/consents',           [PropertyController::class, 'consents'])->name('properties.consents');
         Route::get('properties/{property}/consents/{consent}', [PropertyController::class, 'consentShow'])->name('properties.consent-show');
         Route::get('properties/{property}/viewings',           [PropertyController::class, 'viewings'])->name('properties.viewings');
         Route::get('properties/{property}/viewings/{viewing}', [PropertyController::class, 'viewingShow'])->name('properties.viewing-show');
+
+        // オーナー管理
+        Route::get('owners',                [OwnerController::class, 'index'])->name('owners.index');
+        Route::get('owners/create',         [OwnerController::class, 'create'])->name('owners.create');
+        Route::post('owners',               [OwnerController::class, 'store'])->name('owners.store');
+        Route::get('owners/{owner}',        [OwnerController::class, 'show'])->name('owners.show');
+        Route::get('owners/{owner}/edit',   [OwnerController::class, 'edit'])->name('owners.edit');
+        Route::put('owners/{owner}',        [OwnerController::class, 'update'])->name('owners.update');
+        Route::delete('owners/{owner}',     [OwnerController::class, 'destroy'])->name('owners.destroy');
 
         // お知らせ管理
         Route::get('news',               [NewsController::class, 'index'])->name('news.index');

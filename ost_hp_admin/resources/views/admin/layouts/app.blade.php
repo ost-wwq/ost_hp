@@ -308,6 +308,13 @@
             </a>
         </div>
         <div class="sidebar__nav-item">
+            <a href="{{ route('admin.owners.index') }}"
+               class="{{ request()->routeIs('admin.owners.*') ? 'active' : '' }}">
+                <span>👤</span>
+                <span>オーナー管理</span>
+            </a>
+        </div>
+        <div class="sidebar__nav-item">
             <a href="{{ route('admin.contacts.index') }}"
                class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                 <span>📨</span>

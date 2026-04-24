@@ -155,6 +155,54 @@
             </div>
         </div>
 
+        {{-- オーナー情報 --}}
+        <div class="card">
+            <div class="card__header">
+                <div class="card__title">オーナー情報</div>
+                <a href="{{ route('admin.properties.owner', $property) }}" class="btn btn--ghost btn--sm">設定</a>
+            </div>
+            <div class="card__body" style="padding:0;">
+                @if($property->owner)
+                <dl style="margin:0;">
+                    <div style="display:grid;grid-template-columns:90px 1fr;border-bottom:1px solid #f0f2f8;">
+                        <dt style="padding:12px 16px;font-size:.78rem;font-weight:700;color:#7b7b9a;background:#fafbfd;">氏名</dt>
+                        <dd style="padding:12px 16px;font-size:.9rem;font-weight:600;">
+                            <a href="{{ route('admin.owners.show', $property->owner) }}" style="color:#2f7cff;">{{ $property->owner->name }}</a>
+                        </dd>
+                    </div>
+                    @if($property->owner->kana)
+                    <div style="display:grid;grid-template-columns:90px 1fr;border-bottom:1px solid #f0f2f8;">
+                        <dt style="padding:12px 16px;font-size:.78rem;font-weight:700;color:#7b7b9a;background:#fafbfd;">フリガナ</dt>
+                        <dd style="padding:12px 16px;font-size:.9rem;">{{ $property->owner->kana }}</dd>
+                    </div>
+                    @endif
+                    @if($property->owner->phone)
+                    <div style="display:grid;grid-template-columns:90px 1fr;border-bottom:1px solid #f0f2f8;">
+                        <dt style="padding:12px 16px;font-size:.78rem;font-weight:700;color:#7b7b9a;background:#fafbfd;">電話番号</dt>
+                        <dd style="padding:12px 16px;font-size:.9rem;">{{ $property->owner->phone }}</dd>
+                    </div>
+                    @endif
+                    @if($property->owner->email)
+                    <div style="display:grid;grid-template-columns:90px 1fr;border-bottom:1px solid #f0f2f8;">
+                        <dt style="padding:12px 16px;font-size:.78rem;font-weight:700;color:#7b7b9a;background:#fafbfd;">メール</dt>
+                        <dd style="padding:12px 16px;font-size:.9rem;word-break:break-all;">{{ $property->owner->email }}</dd>
+                    </div>
+                    @endif
+                    @if($property->owner->address)
+                    <div style="display:grid;grid-template-columns:90px 1fr;">
+                        <dt style="padding:12px 16px;font-size:.78rem;font-weight:700;color:#7b7b9a;background:#fafbfd;">住所</dt>
+                        <dd style="padding:12px 16px;font-size:.9rem;">{{ $property->owner->address }}</dd>
+                    </div>
+                    @endif
+                </dl>
+                @else
+                <div style="padding:24px;font-size:.88rem;color:#9090b0;">
+                    未設定 — <a href="{{ route('admin.properties.owner', $property) }}" style="color:#2f7cff;">オーナーを設定する</a>
+                </div>
+                @endif
+            </div>
+        </div>
+
     </div>
 
     {{-- 右カラム --}}

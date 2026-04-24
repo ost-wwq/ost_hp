@@ -12,6 +12,7 @@ class Property extends Model
         'description', 'main_image', 'images', 'published', 'confirm_token', 'confirm_pin',
         'viewing_enabled', 'viewing_keybbox_number', 'viewing_keybbox_image',
         'viewing_keybbox_description', 'viewing_token',
+        'owner_id',
     ];
 
     protected $casts = [
@@ -77,6 +78,11 @@ class Property extends Model
                 : number_format($oku) . '億円';
         }
         return number_format($this->price) . '万円';
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(Owner::class);
     }
 
     public function consents()
