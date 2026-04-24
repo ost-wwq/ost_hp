@@ -48,6 +48,16 @@
             <dt>申込日時</dt>
             <dd>{{ $viewing->created_at->format('Y年m月d日 H:i') }}</dd>
         </dl>
+        @if($property->viewing_enabled && $property->viewing_token)
+        <a href="{{ route('property.viewing.complete', $property->viewing_token) }}"
+           style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:10px;background:#2f7cff;color:#fff;font-size:.88rem;font-weight:700;text-decoration:none;margin-top:20px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            予約完了画面（キーボックス番号）を確認する
+        </a>
+        @endif
+
         <div class="note">
             このページは担当者が発行した確認用URLです。<br>
             内容に変更がある場合は担当者までご連絡ください。

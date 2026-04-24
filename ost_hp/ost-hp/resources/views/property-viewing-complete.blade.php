@@ -80,6 +80,14 @@
             内見後は必ずキーボックスに鍵をお戻しください。
         </div>
 
+        <a href="{{ route('property.confirm', $property->confirm_token) }}"
+           style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:10px;background:#f8f9ff;color:#334155;font-size:.88rem;font-weight:600;text-decoration:none;border:1px solid #e4e6f0;margin-top:16px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            最新状態（ご紹介可否）確認へ戻る
+        </a>
+
     </div>
 </div>
 </body>
