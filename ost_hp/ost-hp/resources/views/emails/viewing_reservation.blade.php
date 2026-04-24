@@ -27,7 +27,7 @@
 <body>
 <div class="wrap">
     <div class="header">
-        <div class="header__logo">🏠</div>
+        <div class="header__logo"><img src="{{ config('app.url') }}/ost_icon_20260321.jpg" alt="ワンステップテックス不動産" style="height:60px; width:auto; border-radius:8px;"></div>
         <div class="header__name">ワンステップテックス不動産</div>
     </div>
     <div class="body">
