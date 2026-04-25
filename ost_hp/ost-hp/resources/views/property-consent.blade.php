@@ -321,20 +321,48 @@
 </div>
 
 <script>
+    function compressImage(file, maxBytes, callback) {
+        var img = new Image();
+        var url = URL.createObjectURL(file);
+        img.onload = function () {
+            URL.revokeObjectURL(url);
+            var canvas = document.createElement('canvas');
+            var w = img.width, h = img.height;
+            var maxDim = 2048;
+            if (w > maxDim || h > maxDim) {
+                if (w >= h) { h = Math.round(h * maxDim / w); w = maxDim; }
+                else        { w = Math.round(w * maxDim / h); h = maxDim; }
+            }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            var q = 0.85;
+            (function attempt() {
+                canvas.toBlob(function (blob) {
+                    if (blob.size > maxBytes && q > 0.1) { q = Math.max(+(q - 0.1).toFixed(2), 0.1); attempt(); }
+                    else { callback(blob); }
+                }, 'image/jpeg', q);
+            })();
+        };
+        img.src = url;
+    }
+
     function onCardSelected(input) {
         var label = document.getElementById('file-label-name');
         var preview = document.getElementById('card-preview');
         if (input.files && input.files[0]) {
             var file = input.files[0];
-            label.textContent = file.name;
             if (file.type.startsWith('image/')) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
+                compressImage(file, 2 * 1024 * 1024, function (blob) {
+                    var name = file.name.replace(/\.[^.]+$/, '.jpg');
+                    var dt = new DataTransfer();
+                    dt.items.add(new File([blob], name, { type: 'image/jpeg' }));
+                    input.files = dt.files;
+                    label.textContent = name;
+                    preview.src = URL.createObjectURL(blob);
                     preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+                });
             } else {
+                label.textContent = file.name;
                 preview.style.display = 'none';
             }
         } else {

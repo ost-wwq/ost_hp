@@ -209,6 +209,31 @@ textarea.form-input { resize:vertical; }
 </style>
 <script>
 (function () {
+    function compressImage(file, maxBytes, callback) {
+        var el = new Image();
+        var url = URL.createObjectURL(file);
+        el.onload = function () {
+            URL.revokeObjectURL(url);
+            var canvas = document.createElement('canvas');
+            var w = el.width, h = el.height;
+            var maxDim = 2048;
+            if (w > maxDim || h > maxDim) {
+                if (w >= h) { h = Math.round(h * maxDim / w); w = maxDim; }
+                else        { w = Math.round(w * maxDim / h); h = maxDim; }
+            }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(el, 0, 0, w, h);
+            var q = 0.85;
+            (function attempt() {
+                canvas.toBlob(function (blob) {
+                    if (blob.size > maxBytes && q > 0.1) { q = Math.max(+(q - 0.1).toFixed(2), 0.1); attempt(); }
+                    else { callback(blob); }
+                }, 'image/jpeg', q);
+            })();
+        };
+        el.src = url;
+    }
+
     var input   = document.getElementById('main-image-input');
     var current = document.getElementById('main-image-current');
     var wrap    = document.getElementById('main-image-preview-wrap');
@@ -218,29 +243,51 @@ textarea.form-input { resize:vertical; }
 
     input.addEventListener('change', function () {
         var file = this.files[0];
-        if (!file) {
-            wrap.style.display = 'none';
-            return;
-        }
+        if (!file) { wrap.style.display = 'none'; return; }
 
         current.style.display = 'none';
         wrap.style.display = 'block';
 
-        var isPdf = file.type === 'application/pdf'
-                 || file.name.toLowerCase().endsWith('.pdf');
-
+        var isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
         if (isPdf) {
-            img.style.display  = 'none';
-            pdf.style.display  = 'inline-flex';
+            img.style.display   = 'none';
+            pdf.style.display   = 'inline-flex';
             pdfName.textContent = file.name;
         } else {
             pdf.style.display = 'none';
             img.style.display = 'block';
-            var reader = new FileReader();
-            reader.onload = function (e) { img.src = e.target.result; };
-            reader.readAsDataURL(file);
+            var self = this;
+            compressImage(file, 2 * 1024 * 1024, function (blob) {
+                var name = file.name.replace(/\.[^.]+$/, '.jpg');
+                var dt = new DataTransfer();
+                dt.items.add(new File([blob], name, { type: 'image/jpeg' }));
+                self.files = dt.files;
+                img.src = URL.createObjectURL(blob);
+            });
         }
     });
+
+    var extraInput = document.querySelector('input[name="extra_images[]"]');
+    if (extraInput) {
+        extraInput.addEventListener('change', function () {
+            var files = Array.from(this.files);
+            if (!files.length) return;
+            var self = this;
+            var compressed = new Array(files.length);
+            var pending = files.length;
+            files.forEach(function (file, i) {
+                compressImage(file, 2 * 1024 * 1024, function (blob) {
+                    var name = file.name.replace(/\.[^.]+$/, '.jpg');
+                    compressed[i] = new File([blob], name, { type: 'image/jpeg' });
+                    if (--pending === 0) {
+                        var dt = new DataTransfer();
+                        compressed.forEach(function (f) { dt.items.add(f); });
+                        self.files = dt.files;
+                    }
+                });
+            });
+        });
+    }
 }());
 </script>
 
