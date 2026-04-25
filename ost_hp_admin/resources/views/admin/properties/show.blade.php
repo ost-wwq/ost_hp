@@ -209,10 +209,8 @@
             </div>
         </div>
 
-    </div>
-
-    {{-- 右カラム --}}
-    <div style="display:flex;flex-direction:column;gap:20px;">
+        {{-- 最新状態確認 / 内見予約設定 横並び --}}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
 
         {{-- 最新状態確認URL --}}
         <div class="card">
@@ -446,6 +444,13 @@
 
             </div>
         </div>
+
+        </div>{{-- /横並びグリッド --}}
+
+    </div>
+
+    {{-- 右カラム --}}
+    <div style="display:flex;flex-direction:column;gap:20px;">
 
         {{-- 公開設定 --}}
         <div class="card">
