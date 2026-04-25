@@ -45,7 +45,7 @@ class PropertyViewingController extends Controller
             'phone'            => ['required', 'string', 'max:20'],
             'email'            => ['required', 'email', 'max:200'],
             'companions'       => ['required', 'integer', 'min:0', 'max:10'],
-            'business_card'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
+            'business_card'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
             'reserved_date'    => ['required', 'date', 'after_or_equal:today'],
             'reserved_time'    => ['required', 'in:' . implode(',', $validTimes)],
             'privacy'          => ['accepted'],
@@ -65,19 +65,25 @@ class PropertyViewingController extends Controller
             'viewing_consent.accepted'        => '遵守事項承諾書に同意してください。',
         ]);
 
-        $businessCardPath = null;
+        $businessCardName = null;
+        $businessCardData = null;
+        $businessCardMime = null;
         if ($request->hasFile('business_card')) {
-            $businessCardPath = $request->file('business_card')
-                ->store('business_cards', 'public_uploads');
+            $file = $request->file('business_card');
+            $businessCardName = $file->getClientOriginalName();
+            $businessCardData = base64_encode(file_get_contents($file->getRealPath()));
+            $businessCardMime = $file->getMimeType();
         }
 
         $reservation = ViewingReservation::create([
-            'property_id'   => $property->id,
-            'name'          => $request->name,
-            'phone'         => $request->phone,
-            'email'         => $request->email,
-            'companions'    => $request->companions,
-            'business_card' => $businessCardPath,
+            'property_id'        => $property->id,
+            'name'               => $request->name,
+            'phone'              => $request->phone,
+            'email'              => $request->email,
+            'companions'         => $request->companions,
+            'business_card'      => $businessCardName,
+            'business_card_data' => $businessCardData,
+            'business_card_mime' => $businessCardMime,
             'reserved_date' => $request->reserved_date,
             'reserved_time' => $request->reserved_time,
         ]);

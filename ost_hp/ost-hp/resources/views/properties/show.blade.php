@@ -41,8 +41,8 @@
             <div>
                 <!-- メイン画像 -->
                 <div style="border-radius:16px;overflow:hidden;background:#f0f2f8;margin-bottom:16px;aspect-ratio:16/9;">
-                    @if($property->main_image)
-                        <img src="{{ asset('uploads/'.$property->main_image) }}" alt="{{ $property->title }}"
+                    @if($property->main_image_data)
+                        <img src="{{ route('properties.main-image', $property) }}" alt="{{ $property->title }}"
                              style="width:100%;height:100%;object-fit:cover;" id="mainImg">
                     @else
                         <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:var(--blue-light);">🏠</div>
@@ -50,11 +50,17 @@
                 </div>
 
                 <!-- サムネイル -->
-                @php $allImgs = $property->allImages(); @endphp
-                @if(count($allImgs) > 1)
+                @php
+                    $thumbUrls = [];
+                    if ($property->main_image_data) $thumbUrls[] = route('properties.main-image', $property);
+                    foreach ($property->images ?? [] as $key) {
+                        $thumbUrls[] = route('properties.image', [$property, $key]);
+                    }
+                @endphp
+                @if(count($thumbUrls) > 1)
                 <div style="display:flex;gap:8px;margin-bottom:28px;overflow-x:auto;">
-                    @foreach($allImgs as $i => $img)
-                    <img src="{{ asset('uploads/'.$img) }}" alt=""
+                    @foreach($thumbUrls as $i => $imgUrl)
+                    <img src="{{ $imgUrl }}" alt=""
                          onclick="document.getElementById('mainImg').src=this.src"
                          style="width:80px;height:64px;object-fit:cover;border-radius:8px;border:2px solid {{ $i===0 ? 'var(--blue)' : 'var(--border)' }};cursor:pointer;flex-shrink:0;transition:.2s;"
                          onmouseover="this.style.borderColor='var(--blue)'" onmouseout="">
@@ -137,7 +143,7 @@
                 @foreach($related as $p)
                 <a href="{{ route('properties.show', $p) }}" class="prop-card">
                     <div class="prop-card__img" style="height:160px;">
-                        @if($p->main_image)<img src="{{ asset('uploads/'.$p->main_image) }}" alt="{{ $p->title }}">
+                        @if($p->main_image_data)<img src="{{ route('properties.main-image', $p) }}" alt="{{ $p->title }}">
                         @else<div class="prop-card__img-placeholder">🏠</div>@endif
                         <div class="prop-card__badges">
                             <span class="prop-badge prop-badge--{{ $p->statusColor() }}">{{ $p->statusLabel() }}</span>

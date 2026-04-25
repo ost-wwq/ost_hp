@@ -42,6 +42,9 @@ Route::get('/commission', fn() => view('commission'))->name('commission');
 // 物件一覧・詳細（公開）
 Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
 Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
+Route::get('/properties/{property}/main-image', [PropertyController::class, 'mainImage'])->name('properties.main-image');
+Route::get('/properties/{property}/images/{key}', [PropertyController::class, 'propertyImage'])->name('properties.image');
+Route::get('/properties/{property}/keybbox-image', [PropertyController::class, 'keybboxImage'])->name('properties.keybbox-image');
 
 // お問い合わせフォーム送信
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');

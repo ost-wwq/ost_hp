@@ -9,14 +9,18 @@ class Property extends Model
     protected $fillable = [
         'title', 'property_type', 'status', 'price',
         'address', 'area', 'rooms', 'age',
-        'description', 'main_image', 'images', 'published', 'confirm_token', 'confirm_pin',
-        'viewing_enabled', 'viewing_keybbox_number', 'viewing_keybbox_image',
+        'description', 'main_image', 'main_image_data', 'main_image_mime',
+        'images', 'images_data', 'images_mimes', 'published', 'confirm_token', 'confirm_pin',
+        'viewing_enabled', 'viewing_keybbox_number',
+        'viewing_keybbox_image', 'viewing_keybbox_image_data', 'viewing_keybbox_image_mime',
         'viewing_keybbox_description', 'viewing_token',
         'owner_id',
     ];
 
     protected $casts = [
         'images'          => 'array',
+        'images_data'     => 'array',
+        'images_mimes'    => 'array',
         'published'       => 'boolean',
         'viewing_enabled' => 'boolean',
         'price'           => 'integer',

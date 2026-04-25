@@ -99,7 +99,7 @@ class BrokerController extends Controller
             'name'          => ['required', 'string', 'max:100'],
             'phone'         => ['required', 'string', 'max:20'],
             'email'         => ['required', 'email', 'max:200'],
-            'business_card' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
+            'business_card' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
             'ad_types'      => ['required', 'array', 'min:1'],
             'ad_types.*'    => ['string', 'in:own_hp,suumo,homes,athome,store,other'],
             'ad_other_text' => ['nullable', 'required_if:ad_types.*,other', 'string', 'max:200'],
@@ -107,17 +107,24 @@ class BrokerController extends Controller
             'privacy'       => ['accepted'],
         ]);
 
-        $cardPath = null;
+        $cardName = null;
+        $cardData = null;
+        $cardMime = null;
         if ($request->hasFile('business_card')) {
-            $cardPath = $request->file('business_card')->store('business_cards', 'public');
+            $file = $request->file('business_card');
+            $cardName = $file->getClientOriginalName();
+            $cardData = base64_encode(file_get_contents($file->getRealPath()));
+            $cardMime = $file->getMimeType();
         }
 
         $consent = PropertyConsent::create([
-            'property_id'   => $property->id,
-            'name'          => $validated['name'],
-            'phone'         => $validated['phone'],
-            'email'         => $validated['email'],
-            'business_card' => $cardPath,
+            'property_id'        => $property->id,
+            'name'               => $validated['name'],
+            'phone'              => $validated['phone'],
+            'email'              => $validated['email'],
+            'business_card'      => $cardName,
+            'business_card_data' => $cardData,
+            'business_card_mime' => $cardMime,
             'ad_types'      => $validated['ad_types'],
             'ad_other_text' => in_array('other', $validated['ad_types']) ? ($validated['ad_other_text'] ?? null) : null,
         ]);

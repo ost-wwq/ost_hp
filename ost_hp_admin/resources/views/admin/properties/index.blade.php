@@ -76,8 +76,8 @@
                 @foreach($properties as $p)
                 <tr>
                     <td>
-                        @if($p->main_image)
-                            <img src="{{ asset('uploads/'.$p->main_image) }}" alt=""
+                        @if($p->main_image_data)
+                            <img src="{{ route('admin.properties.main-image', $p) }}" alt=""
                                  style="width:48px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e4e6f0;">
                         @else
                             <div style="width:48px;height:40px;background:#f0f2f8;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🏠</div>

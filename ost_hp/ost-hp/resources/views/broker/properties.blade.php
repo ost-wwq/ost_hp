@@ -395,8 +395,8 @@
                 @foreach($properties[$typeKey] as $p)
                 <div class="prop-row">
                     <div class="prop-row__thumb">
-                        @if($p->main_image)
-                            <img src="{{ asset('uploads/'.$p->main_image) }}" alt="">
+                        @if($p->main_image_data)
+                            <img src="{{ route('properties.main-image', $p) }}" alt="">
                         @else
                             🏠
                         @endif
@@ -434,7 +434,7 @@
             @foreach($properties['other'] as $p)
             <div class="prop-row">
                 <div class="prop-row__thumb">
-                    @if($p->main_image)<img src="{{ asset('uploads/'.$p->main_image) }}" alt="">@else 🏠 @endif
+                    @if($p->main_image_data)<img src="{{ route('properties.main-image', $p) }}" alt="">@else 🏠 @endif
                 </div>
                 <div class="prop-row__info">
                     <div class="prop-row__title">{{ $p->title }}</div>

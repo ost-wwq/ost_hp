@@ -215,8 +215,8 @@
             @foreach($featuredProperties as $p)
             <a href="{{ route('properties.show', $p) }}" class="prop-home-card reveal">
                 <div class="prop-home-card__img">
-                    @if($p->main_image)
-                        <img src="{{ asset('uploads/'.$p->main_image) }}" alt="{{ $p->title }}">
+                    @if($p->main_image_data)
+                        <img src="{{ route('properties.main-image', $p) }}" alt="{{ $p->title }}">
                     @else
                         <div class="prop-home-card__placeholder">🏠</div>
                     @endif

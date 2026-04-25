@@ -46,15 +46,15 @@
                         </div>
                     </dd>
                 </div>
-                @if($consent->business_card)
+                @if($consent->business_card_data)
                 <div style="display:grid;grid-template-columns:110px 1fr;border-bottom:1px solid #f0f2f8;">
                     <dt style="padding:12px 16px;font-size:.78rem;font-weight:700;color:#7b7b9a;background:#fafbfd;">名刺</dt>
                     <dd style="padding:12px 16px;">
-                        @if(str_ends_with(strtolower($consent->business_card), '.pdf'))
-                            <a href="{{ asset('uploads/'.$consent->business_card) }}" target="_blank"
+                        @if($consent->business_card_mime === 'application/pdf')
+                            <a href="{{ route('admin.properties.consent-business-card', [$property, $consent]) }}" target="_blank"
                                style="font-size:.85rem;color:#2f7cff;">↗ PDFを開く</a>
                         @else
-                            <img src="{{ asset('uploads/'.$consent->business_card) }}" alt="名刺"
+                            <img src="{{ route('admin.properties.consent-business-card', [$property, $consent]) }}" alt="名刺"
                                  style="max-width:280px;border-radius:8px;border:1px solid #e4e6f0;">
                         @endif
                     </dd>

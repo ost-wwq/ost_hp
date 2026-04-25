@@ -14,6 +14,8 @@ class Property extends Model
 
     protected $casts = [
         'images'          => 'array',
+        'images_data'     => 'array',
+        'images_mimes'    => 'array',
         'published'       => 'boolean',
         'viewing_enabled' => 'boolean',
         'price'           => 'integer',

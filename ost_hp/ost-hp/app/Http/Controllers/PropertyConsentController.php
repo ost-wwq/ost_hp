@@ -33,7 +33,7 @@ class PropertyConsentController extends Controller
             'name'          => ['required', 'string', 'max:100'],
             'phone'         => ['required', 'string', 'max:20'],
             'email'         => ['required', 'email', 'max:200'],
-            'business_card' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
+            'business_card' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
             'ad_types'      => ['required', 'array', 'min:1'],
             'ad_types.*'    => ['string', 'in:own_hp,suumo,homes,athome,store,other'],
             'ad_other_text' => ['nullable', 'required_if:ad_types.*,other', 'string', 'max:200'],
@@ -51,18 +51,24 @@ class PropertyConsentController extends Controller
             'privacy.accepted'       => 'プライバシーポリシーに同意してください。',
         ]);
 
-        $businessCardPath = null;
+        $businessCardName = null;
+        $businessCardData = null;
+        $businessCardMime = null;
         if ($request->hasFile('business_card')) {
-            $businessCardPath = $request->file('business_card')
-                ->store('business_cards', 'public_uploads');
+            $file = $request->file('business_card');
+            $businessCardName = $file->getClientOriginalName();
+            $businessCardData = base64_encode(file_get_contents($file->getRealPath()));
+            $businessCardMime = $file->getMimeType();
         }
 
         $consent = PropertyConsent::create([
-            'property_id'   => $property->id,
-            'name'          => $request->name,
-            'phone'         => $request->phone,
-            'email'         => $request->email,
-            'business_card' => $businessCardPath,
+            'property_id'        => $property->id,
+            'name'               => $request->name,
+            'phone'              => $request->phone,
+            'email'              => $request->email,
+            'business_card'      => $businessCardName,
+            'business_card_data' => $businessCardData,
+            'business_card_mime' => $businessCardMime,
             'ad_types'      => $request->ad_types,
             'ad_other_text' => in_array('other', $request->ad_types ?? []) ? $request->ad_other_text : null,
         ]);

@@ -61,19 +61,19 @@
     <div style="display:flex;flex-direction:column;gap:20px;">
 
         {{-- メイン画像 / PDF --}}
-        @if($property->main_image)
+        @if($property->main_image_data)
         <div class="card">
             <div class="card__header"><div class="card__title">メイン画像 / PDF</div></div>
             <div class="card__body" style="padding:0;">
-                @if(str_ends_with(strtolower($property->main_image), '.pdf'))
+                @if($property->main_image_mime === 'application/pdf')
                     <div style="padding:8px 12px;border-bottom:1px solid #e4e6f0;display:flex;justify-content:flex-end;">
-                        <a href="{{ asset('uploads/'.$property->main_image) }}" target="_blank"
+                        <a href="{{ route('admin.properties.main-image', $property) }}" target="_blank"
                            style="font-size:.8rem;color:#2f7cff;">↗ 新しいタブで開く</a>
                     </div>
-                    <embed src="{{ asset('uploads/'.$property->main_image) }}" type="application/pdf"
+                    <embed src="{{ route('admin.properties.main-image', $property) }}" type="application/pdf"
                            style="width:100%;height:85vh;min-height:800px;border:none;border-radius:0 0 12px 12px;display:block;">
                 @else
-                    <img src="{{ asset('uploads/'.$property->main_image) }}" alt="{{ $property->title }}"
+                    <img src="{{ route('admin.properties.main-image', $property) }}" alt="{{ $property->title }}"
                          style="width:100%;display:block;border-radius:0 0 12px 12px;">
                 @endif
             </div>
@@ -86,8 +86,8 @@
             <div class="card__header"><div class="card__title">追加画像</div></div>
             <div class="card__body">
                 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;">
-                    @foreach($property->images as $img)
-                    <img src="{{ asset('uploads/'.$img) }}" alt=""
+                    @foreach($property->images as $key)
+                    <img src="{{ route('admin.properties.image', [$property, $key]) }}" alt=""
                          style="width:100%;height:110px;object-fit:cover;border-radius:8px;border:1px solid #e4e6f0;">
                     @endforeach
                 </div>
@@ -344,9 +344,9 @@
 
                         <div>
                             <label style="font-size:.75rem;font-weight:600;color:#7b7b9a;display:block;margin-bottom:4px;">キーボックス画像</label>
-                            @if($property->viewing_keybbox_image)
+                            @if($property->viewing_keybbox_image_data)
                                 <div style="margin-bottom:6px;">
-                                    <img src="{{ asset('uploads/'.$property->viewing_keybbox_image) }}" alt=""
+                                    <img src="{{ route('admin.properties.keybbox-image', $property) }}" alt=""
                                          id="update-keybbox-preview"
                                          style="width:100%;max-height:140px;object-fit:cover;border-radius:6px;border:1px solid #e4e6f0;">
                                     <label style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:.75rem;color:#7b7b9a;cursor:pointer;">

@@ -8,7 +8,7 @@ use App\Models\Property;
 use App\Models\PropertyConsent;
 use App\Models\ViewingReservation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 class PropertyController extends Controller
@@ -40,9 +40,19 @@ class PropertyController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateRequest($request);
-        $validated['main_image'] = $this->uploadMainImage($request);
-        $validated['images']     = $this->uploadExtraImages($request);
-        $validated['published']  = $request->boolean('published');
+        $validated['published'] = $request->boolean('published');
+
+        $mainImage = $this->encodeMainImage($request);
+        if ($mainImage) {
+            $validated = array_merge($validated, $mainImage);
+        }
+
+        $extra = $this->encodeExtraImages($request);
+        if ($extra) {
+            $validated['images']       = $extra['keys'];
+            $validated['images_data']  = $extra['data'];
+            $validated['images_mimes'] = $extra['mimes'];
+        }
 
         Property::create($validated);
 
@@ -67,25 +77,42 @@ class PropertyController extends Controller
 
         // メイン画像の更新
         if ($request->hasFile('main_image')) {
-            $this->deleteFile($property->main_image);
-            $validated['main_image'] = $this->uploadMainImage($request);
+            $mainImage = $this->encodeMainImage($request);
+            if ($mainImage) {
+                $validated = array_merge($validated, $mainImage);
+            }
+        }
+
+        // 削除指定された追加画像を先に処理
+        if ($request->has('delete_images')) {
+            $toDelete      = $request->input('delete_images', []);
+            $existingKeys  = $property->images ?? [];
+            $existingData  = $property->images_data ?? [];
+            $existingMimes = $property->images_mimes ?? [];
+
+            $newKeys = $newData = $newMimes = [];
+            foreach ($existingKeys as $i => $key) {
+                if (!in_array($key, $toDelete)) {
+                    $newKeys[]  = $key;
+                    $newData[]  = $existingData[$i] ?? null;
+                    $newMimes[] = $existingMimes[$i] ?? null;
+                }
+            }
+            $validated['images']       = $newKeys;
+            $validated['images_data']  = $newData;
+            $validated['images_mimes'] = $newMimes;
         }
 
         // 追加画像の追加
-        $extra = $this->uploadExtraImages($request);
+        $extra = $this->encodeExtraImages($request);
         if ($extra) {
-            $existing = $property->images ?? [];
-            $validated['images'] = array_merge($existing, $extra);
-        }
+            $baseKeys  = $validated['images']       ?? ($property->images ?? []);
+            $baseData  = $validated['images_data']  ?? ($property->images_data ?? []);
+            $baseMimes = $validated['images_mimes'] ?? ($property->images_mimes ?? []);
 
-        // 削除指定された追加画像
-        if ($request->has('delete_images')) {
-            $toDelete = $request->input('delete_images', []);
-            $remaining = array_filter($property->images ?? [], fn($p) => !in_array($p, $toDelete));
-            foreach ($toDelete as $path) {
-                $this->deleteFile($path);
-            }
-            $validated['images'] = array_values($remaining);
+            $validated['images']       = array_merge($baseKeys, $extra['keys']);
+            $validated['images_data']  = array_merge($baseData, $extra['data']);
+            $validated['images_mimes'] = array_merge($baseMimes, $extra['mimes']);
         }
 
         $property->update($validated);
@@ -96,11 +123,6 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
-        // 画像ファイルを削除
-        $this->deleteFile($property->main_image);
-        foreach ($property->images ?? [] as $img) {
-            $this->deleteFile($img);
-        }
         $property->delete();
 
         return redirect()->route('admin.properties.index')
@@ -151,9 +173,10 @@ class PropertyController extends Controller
         $data['viewing_keybbox_description'] = $request->input('viewing_keybbox_description');
 
         if ($request->hasFile('viewing_keybbox_image')) {
-            $this->deleteFile($property->viewing_keybbox_image);
-            $data['viewing_keybbox_image'] = $request->file('viewing_keybbox_image')
-                ->store('properties', 'public_uploads');
+            $encoded = $this->encodeFile($request->file('viewing_keybbox_image'));
+            $data['viewing_keybbox_image']      = $encoded['name'];
+            $data['viewing_keybbox_image_data'] = $encoded['data'];
+            $data['viewing_keybbox_image_mime'] = $encoded['mime'];
         }
 
         $property->update($data);
@@ -174,12 +197,14 @@ class PropertyController extends Controller
         $data['viewing_keybbox_description'] = $request->input('viewing_keybbox_description');
 
         if ($request->hasFile('viewing_keybbox_image')) {
-            $this->deleteFile($property->viewing_keybbox_image);
-            $data['viewing_keybbox_image'] = $request->file('viewing_keybbox_image')
-                ->store('properties', 'public_uploads');
+            $encoded = $this->encodeFile($request->file('viewing_keybbox_image'));
+            $data['viewing_keybbox_image']      = $encoded['name'];
+            $data['viewing_keybbox_image_data'] = $encoded['data'];
+            $data['viewing_keybbox_image_mime'] = $encoded['mime'];
         } elseif ($request->boolean('delete_viewing_keybbox_image')) {
-            $this->deleteFile($property->viewing_keybbox_image);
-            $data['viewing_keybbox_image'] = null;
+            $data['viewing_keybbox_image']      = null;
+            $data['viewing_keybbox_image_data'] = null;
+            $data['viewing_keybbox_image_mime'] = null;
         }
 
         $property->update($data);
@@ -209,6 +234,79 @@ class PropertyController extends Controller
     {
         abort_if($viewing->property_id !== $property->id, 404);
         return view('admin.properties.viewing-show', compact('property', 'viewing'));
+    }
+
+    public function consentBusinessCard(Property $property, PropertyConsent $consent)
+    {
+        abort_if($consent->property_id !== $property->id, 404);
+        abort_unless($consent->business_card_data, 404);
+
+        $data = base64_decode($consent->business_card_data);
+        $mime = $consent->business_card_mime ?? 'application/octet-stream';
+        $name = $consent->business_card ?? 'business_card';
+
+        return response($data, 200)
+            ->header('Content-Type', $mime)
+            ->header('Content-Disposition', 'inline; filename="' . $name . '"');
+    }
+
+    public function viewingBusinessCard(Property $property, ViewingReservation $viewing)
+    {
+        abort_if($viewing->property_id !== $property->id, 404);
+        abort_unless($viewing->business_card_data, 404);
+
+        $data = base64_decode($viewing->business_card_data);
+        $mime = $viewing->business_card_mime ?? 'application/octet-stream';
+        $name = $viewing->business_card ?? 'business_card';
+
+        return response($data, 200)
+            ->header('Content-Type', $mime)
+            ->header('Content-Disposition', 'inline; filename="' . $name . '"');
+    }
+
+    public function mainImage(Property $property)
+    {
+        abort_unless($property->main_image_data, 404);
+
+        $data = base64_decode($property->main_image_data);
+        $mime = $property->main_image_mime ?? 'application/octet-stream';
+        $name = $property->main_image ?? 'image';
+
+        return response($data, 200)
+            ->header('Content-Type', $mime)
+            ->header('Content-Disposition', 'inline; filename="' . $name . '"');
+    }
+
+    public function propertyImage(Property $property, string $key)
+    {
+        $keys  = $property->images ?? [];
+        $index = array_search($key, $keys);
+        abort_if($index === false, 404);
+
+        $dataArr  = $property->images_data ?? [];
+        $mimeArr  = $property->images_mimes ?? [];
+        $rawData  = $dataArr[$index] ?? null;
+        abort_unless($rawData, 404);
+
+        $data = base64_decode($rawData);
+        $mime = $mimeArr[$index] ?? 'application/octet-stream';
+
+        return response($data, 200)
+            ->header('Content-Type', $mime)
+            ->header('Content-Disposition', 'inline');
+    }
+
+    public function keybboxImage(Property $property)
+    {
+        abort_unless($property->viewing_keybbox_image_data, 404);
+
+        $data = base64_decode($property->viewing_keybbox_image_data);
+        $mime = $property->viewing_keybbox_image_mime ?? 'application/octet-stream';
+        $name = $property->viewing_keybbox_image ?? 'image';
+
+        return response($data, 200)
+            ->header('Content-Type', $mime)
+            ->header('Content-Disposition', 'inline; filename="' . $name . '"');
     }
 
     public function ownerEdit(Property $property)
@@ -246,28 +344,36 @@ class PropertyController extends Controller
         ]);
     }
 
-    private function uploadMainImage(Request $request): ?string
+    private function encodeFile(UploadedFile $file): array
+    {
+        return [
+            'name' => $file->getClientOriginalName(),
+            'data' => base64_encode(file_get_contents($file->getRealPath())),
+            'mime' => $file->getMimeType() ?? $file->getClientMimeType(),
+        ];
+    }
+
+    private function encodeMainImage(Request $request): ?array
     {
         if (!$request->hasFile('main_image')) return null;
-        $file = $request->file('main_image');
-        $path = $file->store('properties', 'public_uploads');
-        return $path;
+        $encoded = $this->encodeFile($request->file('main_image'));
+        return [
+            'main_image'      => $encoded['name'],
+            'main_image_data' => $encoded['data'],
+            'main_image_mime' => $encoded['mime'],
+        ];
     }
 
-    private function uploadExtraImages(Request $request): array
+    private function encodeExtraImages(Request $request): ?array
     {
-        if (!$request->hasFile('extra_images')) return [];
-        $paths = [];
+        if (!$request->hasFile('extra_images')) return null;
+        $keys = $data = $mimes = [];
         foreach ($request->file('extra_images') as $file) {
-            $paths[] = $file->store('properties', 'public_uploads');
+            $encoded = $this->encodeFile($file);
+            $keys[]  = Str::random(40);
+            $data[]  = $encoded['data'];
+            $mimes[] = $encoded['mime'];
         }
-        return $paths;
-    }
-
-    private function deleteFile(?string $path): void
-    {
-        if ($path && file_exists(public_path('uploads/' . $path))) {
-            unlink(public_path('uploads/' . $path));
-        }
+        return ['keys' => $keys, 'data' => $data, 'mimes' => $mimes];
     }
 }

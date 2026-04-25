@@ -49,10 +49,10 @@
         </div>
 
         {{-- キーボックス画像 --}}
-        @if($property->viewing_keybbox_image)
+        @if($property->viewing_keybbox_image_data)
         <div>
             <div class="label">キーボックス</div>
-            <img src="{{ asset('uploads/'.$property->viewing_keybbox_image) }}" alt="キーボックス"
+            <img src="{{ route('properties.keybbox-image', $property) }}" alt="キーボックス"
                  style="width:100%;border-radius:8px;border:1px solid #e4e6f0;margin-top:6px;">
         </div>
         @endif

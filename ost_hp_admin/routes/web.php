@@ -38,10 +38,15 @@ Route::prefix('ost_hp_admin')->name('admin.')->group(function () {
         Route::patch('properties/{property}/update-viewing',  [PropertyController::class, 'updateViewing'])->name('properties.update-viewing');
         Route::get('properties/{property}/owner',              [PropertyController::class, 'ownerEdit'])->name('properties.owner');
         Route::put('properties/{property}/owner',              [PropertyController::class, 'ownerUpdate'])->name('properties.owner.update');
-        Route::get('properties/{property}/consents',           [PropertyController::class, 'consents'])->name('properties.consents');
-        Route::get('properties/{property}/consents/{consent}', [PropertyController::class, 'consentShow'])->name('properties.consent-show');
-        Route::get('properties/{property}/viewings',           [PropertyController::class, 'viewings'])->name('properties.viewings');
-        Route::get('properties/{property}/viewings/{viewing}', [PropertyController::class, 'viewingShow'])->name('properties.viewing-show');
+        Route::get('properties/{property}/consents',                              [PropertyController::class, 'consents'])->name('properties.consents');
+        Route::get('properties/{property}/consents/{consent}',                    [PropertyController::class, 'consentShow'])->name('properties.consent-show');
+        Route::get('properties/{property}/consents/{consent}/business-card',      [PropertyController::class, 'consentBusinessCard'])->name('properties.consent-business-card');
+        Route::get('properties/{property}/viewings',                              [PropertyController::class, 'viewings'])->name('properties.viewings');
+        Route::get('properties/{property}/viewings/{viewing}',                    [PropertyController::class, 'viewingShow'])->name('properties.viewing-show');
+        Route::get('properties/{property}/viewings/{viewing}/business-card',      [PropertyController::class, 'viewingBusinessCard'])->name('properties.viewing-business-card');
+        Route::get('properties/{property}/main-image',                            [PropertyController::class, 'mainImage'])->name('properties.main-image');
+        Route::get('properties/{property}/images/{key}',                          [PropertyController::class, 'propertyImage'])->name('properties.image');
+        Route::get('properties/{property}/keybbox-image',                         [PropertyController::class, 'keybboxImage'])->name('properties.keybbox-image');
 
         // オーナー管理
         Route::get('owners',                [OwnerController::class, 'index'])->name('owners.index');
