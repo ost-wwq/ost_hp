@@ -17,6 +17,7 @@
             align-items: flex-start;
             justify-content: center;
             padding: 32px 16px;
+            overflow-x: hidden;
         }
         .card {
             background: #fff;
@@ -24,9 +25,16 @@
             box-shadow: 0 2px 16px rgba(0,0,0,.08);
             width: 100%;
             max-width: 480px;
+            min-width: 0;
+            overflow: hidden;
         }
-        .card__header { padding: 20px 24px; border-bottom: 1px solid #f0f2f8; }
+        .card__header { padding: 20px 24px; border-bottom: 1px solid #f0f2f8; word-break: break-all; }
         .card__body { padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+        @media (max-width: 400px) {
+            body { padding: 16px 8px; }
+            .card__header { padding: 16px; }
+            .card__body { padding: 16px; }
+        }
         .field label { display:block; font-size:.8rem; font-weight:700; color:#334155; margin-bottom:6px; }
         .field label .req { color:#e53e3e; margin-left:4px; font-size:.72rem; }
         .field input[type=text],
@@ -165,7 +173,7 @@
                     <div>
                         <input type="date" name="reserved_date" value="{{ old('reserved_date') }}"
                                min="{{ date('Y-m-d') }}"
-                               style="width:100%;padding:10px 14px;border:1px solid #e4e6f0;border-radius:8px;font-size:.95rem;font-family:inherit;outline:none;">
+                               style="width:100%;padding:10px 14px;border:1px solid #e4e6f0;border-radius:8px;font-size:.95rem;font-family:inherit;outline:none;color:#334155;-webkit-text-fill-color:#334155;">
                         @error('reserved_date')<div class="error">{{ $message }}</div>@enderror
                     </div>
                     <div>
