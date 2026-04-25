@@ -37,6 +37,12 @@
         }
         .field input:focus { border-color:#2f7cff; }
         .field .error { font-size:.75rem; color:#e53e3e; margin-top:4px; }
+        .datetime-grid {
+            display:grid; grid-template-columns:1fr 1fr; gap:10px;
+        }
+        @media (max-width: 480px) {
+            .datetime-grid { grid-template-columns:1fr; }
+        }
         .file-label {
             display:flex; align-items:center; gap:8px; padding:10px 14px;
             border:1px dashed #c8cce0; border-radius:8px; cursor:pointer;
@@ -155,7 +161,7 @@
 
             <div class="field">
                 <label>予約日時<span class="req">必須</span></label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div class="datetime-grid">
                     <div>
                         <input type="date" name="reserved_date" value="{{ old('reserved_date') }}"
                                min="{{ date('Y-m-d') }}"
