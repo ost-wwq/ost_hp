@@ -101,6 +101,7 @@ class PropertyViewingController extends Controller
             ->firstOrFail();
 
         if (! $request->session()->get("pin_verified_{$property->confirm_token}")) {
+            $request->session()->put("pin_redirect_{$property->confirm_token}", $request->url());
             return redirect()->route('property.confirm', $property->confirm_token);
         }
 

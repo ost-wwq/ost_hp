@@ -28,6 +28,10 @@ class PropertyConfirmController extends Controller
 
         $request->session()->put("pin_verified_{$token}", true);
 
-        return redirect()->route('property.confirm', $token);
+        $redirectUrl = $request->session()->pull("pin_redirect_{$token}");
+
+        return $redirectUrl
+            ? redirect($redirectUrl)
+            : redirect()->route('property.confirm', $token);
     }
 }
