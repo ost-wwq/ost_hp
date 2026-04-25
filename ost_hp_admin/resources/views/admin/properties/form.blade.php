@@ -172,11 +172,8 @@
                         {{ $property->exists ? '💾 更新する' : '✅ 登録する' }}
                     </button>
                     @if($property->exists)
-                    <form method="POST" action="{{ route('admin.properties.destroy', $property) }}"
-                          onsubmit="return confirm('この物件を削除しますか？画像も削除されます。')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn--danger btn--full">🗑 削除する</button>
-                    </form>
+                    <button type="button" class="btn btn--danger btn--full"
+                            onclick="if(confirm('この物件を削除しますか？画像も削除されます。')) document.getElementById('delete-property-form').submit()">🗑 削除する</button>
                     @endif
                 </div>
             </div>
@@ -196,6 +193,12 @@
     </div>
 
 </form>
+
+@if($property->exists)
+<form id="delete-property-form" method="POST" action="{{ route('admin.properties.destroy', $property) }}">
+    @csrf @method('DELETE')
+</form>
+@endif
 
 <style>
 .form-input { width:100%; padding:10px 14px; border:1.5px solid #e4e6f0; border-radius:8px; font-size:.9rem; font-family:inherit; outline:none; transition:.2s; background:#fff; }
