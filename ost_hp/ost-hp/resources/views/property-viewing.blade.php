@@ -171,9 +171,9 @@
                 <label>予約日時<span class="req">必須</span></label>
                 <div class="datetime-grid">
                     <div>
-                        <input type="date" name="reserved_date" value="{{ old('reserved_date') }}"
+                        <input type="date" name="reserved_date" value="{{ old('reserved_date', date('Y-m-d')) }}"
                                min="{{ date('Y-m-d') }}"
-                               style="width:100%;padding:10px 14px;border:1px solid #e4e6f0;border-radius:8px;font-size:.95rem;font-family:inherit;outline:none;color:#334155;-webkit-text-fill-color:#334155;background:#fff;-webkit-appearance:none;appearance:none;">
+                               style="width:100%;padding:10px 14px;border:1px solid #e4e6f0;border-radius:8px;font-size:.95rem;font-family:inherit;outline:none;color:#334155;-webkit-text-fill-color:#334155;background:#fff;-webkit-appearance:none;appearance:none;text-align:left;">
                         @error('reserved_date')<div class="error">{{ $message }}</div>@enderror
                     </div>
                     <div>
